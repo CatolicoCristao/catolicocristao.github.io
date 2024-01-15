@@ -11,26 +11,25 @@ const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 var popup = L.popup();
 
-// const geolocation = navigator.geolocation;
-// geolocation.getCurrentPosition(function(position) {
-//     latitude = position.coords.latitude;
-//     longitude = position.coords.longitude;
-//     zoom = 15;
+const geolocation = navigator.geolocation;
+geolocation.getCurrentPosition(function(position) {
+    latitude = position.coords.latitude;
+    longitude = position.coords.longitude;
+    zoom = 15;
 
-//     map.setView([latitude,longitude], zoom);
-// }, function(error) {
-//     if (error.code === error.PERMISSION_DENIED) {
-//         console.log("O usuário não concedeu permissão para acessar sua localização.");
-//     }
-// });
+    map.setView([latitude,longitude], zoom);
+}, function(error) {
+    if (error.code === error.PERMISSION_DENIED) {
+        console.log("O usuário não concedeu permissão para acessar sua localização.");
+    }
+});
 
 function onClickMarker(e) {
     console.log(e.latlng.lat + ' - ' + e.latlng.lng);
 }
 
 function onMapClick(e) {
-    document.querySelector('#lat').value = e.latlng.lat;
-    document.querySelector('#lng').value = e.latlng.lng;
+    document.querySelector('#lat').value = e.latlng.lat + ',' + e.latlng.lng;
 
     popup.setLatLng(e.latlng)
         .setContent(`Clique no mapa: ${e.latlng.toString()}`)
@@ -53,7 +52,7 @@ requestBD.then(res => {
     return res.json();
 }).then(res => {
     for (const [key, item] of Object.entries(res)) {
-        const marker = L.marker([item.c, item.d])
+        const marker = L.marker(item.c.split(','))
             .addTo(map)
             .bindPopup('<h3>' + item.a + '</h3><p>' + item.b + '.</p>')
             .on('click', onClickMarker);
@@ -66,7 +65,12 @@ document.querySelector('button[type="submit"]').addEventListener('click', functi
     const nomeIgreja = document.querySelector('#nome-igreja').value;
     const paroquia = document.querySelector('#paroquia').value;
     const lat = document.querySelector('#lat').value;
-    const lng = document.querySelector('#lng').value;
+
+    console.log(JSON.stringify({
+        'a': nomeIgreja,
+        'b': paroquia,
+        'c': lat
+    }));
 
     fetch(url, {
         mode:  'no-cors',
@@ -75,8 +79,13 @@ document.querySelector('button[type="submit"]').addEventListener('click', functi
         body: JSON.stringify({
             'a': nomeIgreja,
             'b': paroquia,
-            'c': lat,
-            'd': lng
+            'c': lat
         })
-    });
+    }).then(res => {
+        document.querySelector('#alert').innerHTML = nomeIgreja + " adicionada";
+    })
+
+    document.querySelector('#nome-igreja').value = '';
+    document.querySelector('#paroquia').value = '';
+    document.querySelector('#lat').value = '';
 });
