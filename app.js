@@ -43,8 +43,16 @@ map.on('click', onMapClick);
 const url = "https://script.google.com/macros/s/AKfycbw-rCem8tvgz89uy2OOWYnPRy5RN0Ql977cWR-rH2n96v-BCYXXgS3QuFbW0E_RP1o2/exec";
 
 
-// Faz a solicitação GET
-fetch(url)
+let headers = new Headers();
+
+headers.append('Content-Type', 'application/json');
+headers.append('Accept', 'application/json');
+
+headers.append('Access-Control-Allow-Origin', location.origin);
+
+headers.append('GET', 'POST', 'OPTIONS');
+
+fetch(url, {headers: headers})
   .then((response) => {
     // Trata a resposta da solicitação
     if (response.ok) {
@@ -87,6 +95,7 @@ document.querySelector('button[type="submit"]').addEventListener('click', functi
       method: "POST",
       body: JSON.stringify(textoJSON),
       headers: {
+        'Access-Control-Allow-Origin': location.origin,
         "Content-Type": "application/json",
       },
     })
