@@ -23,15 +23,14 @@ var popup = L.popup();
 //     }
 // });
 
-
-const marker = L.marker([-3.707286, -38.580422]).addTo(map)
-    .bindPopup('<b>Comunidade São Francisco</b><br />paróquia São Pedro.').on('click', onClickMarker);
-
 function onClickMarker(e) {
     console.log(e.latlng.lat + ' - ' + e.latlng.lng);
 }
 
 function onMapClick(e) {
+    document.querySelector('#lat').value = e.latlng.lat;
+    document.querySelector('#lng').value = e.latlng.lng;
+
     popup.setLatLng(e.latlng)
         .setContent(`Clique no mapa: ${e.latlng.toString()}`)
         .openOn(map);
@@ -39,38 +38,26 @@ function onMapClick(e) {
 
 map.on('click', onMapClick);
 
-
 const url = "https://script.google.com/macros/s/AKfycbw-rCem8tvgz89uy2OOWYnPRy5RN0Ql977cWR-rH2n96v-BCYXXgS3QuFbW0E_RP1o2/exec";
-
 
 let headers = new Headers();
 
 headers.append('Content-Type', 'application/json');
 headers.append('Accept', 'application/json');
+headers.append('Access-Control-Allow-Origin', '*');
 
-headers.append('Access-Control-Allow-Origin', location.origin);
+const requestBD = fetch(url, headers);
 
-headers.append('GET', 'POST', 'OPTIONS');
-
-fetch(url, {headers: headers})
-  .then((response) => {
-    // Trata a resposta da solicitação
-    if (response.ok) {
-      // A solicitação foi bem-sucedida
-      // Captura os dados da resposta
-      const data = response.json();
-
-      // Faz algo com os dados
-      console.log(data);
-    } else {
-      // A solicitação falhou
-      console.log("Erro ao ler a API");
+requestBD.then(res => {
+    return res.json();
+}).then(res => {
+    for (const [key, item] of Object.entries(res)) {
+        L.marker([item.c, item.d])
+            .addTo(map)
+            .bindPopup('<b>'+item.a+'</b><br />'+item.b+'.')
+            .on('click', onClickMarker);
     }
-  })
-  .catch((error) => {
-    // Erro ao fazer a solicitação
-    console.log(error);
-  });
+});
 
 // Adiciona um evento de click ao botão de salvar
 document.querySelector('button[type="submit"]').addEventListener('click', function(event) {
@@ -79,40 +66,41 @@ document.querySelector('button[type="submit"]').addEventListener('click', functi
     // Obtém os dados do formulário
     const nomeIgreja = document.querySelector('#nome-igreja').value;
     const paroquia = document.querySelector('#paroquia').value;
-    const endereco = document.querySelector('#endereco').value;
+    const lat = document.querySelector('#lat').value;
+    const lng = document.querySelector('#lng').value;
 
     // Cria um objeto JSON
     const dados = {
       'a': nomeIgreja,
       'b': paroquia,
-      'c': endereco
+      'c': lat,
+      'd': lng
     };
-      
-      const textoJSON = JSON.stringify(dados);
+
+    postData(url, headers, dados);
+
     
-    // Faz a solicitação POST
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify(textoJSON),
-      headers: {
-        'Access-Control-Allow-Origin': location.origin,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        // Trata a resposta da solicitação
-        if (response.ok) {
-          // A solicitação foi bem-sucedida
-          console.log("Post enviado com sucesso");
-        } else {
-          // A solicitação falhou
-          console.log("Erro ao enviar o post");
-        }
-      })
-      .catch((error) => {
-        // Erro ao fazer a solicitação
-        console.log(error);
-      });
+    
+    // // Faz a solicitação POST
+    // fetch(url, {
+    //   method: "POST",
+    //   body: JSON.stringify(textoJSON),
+    //   headers: headers,
+    // })
+    //   .then((response) => {
+    //     // Trata a resposta da solicitação
+    //     if (response.ok) {
+    //       // A solicitação foi bem-sucedida
+    //       console.log("Post enviado com sucesso");
+    //     } else {
+    //       // A solicitação falhou
+    //       console.log("Erro ao enviar o post");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     // Erro ao fazer a solicitação
+    //     console.log(error);
+    //   });
       
 
     // Salva o objeto JSON em um arquivo
@@ -125,6 +113,20 @@ document.querySelector('button[type="submit"]').addEventListener('click', functi
 
 });
 
+async function postData(url, headers, data){
+    try {
+        const response = await fetch(url, {
+            method: "POST", // or 'PUT'
+            headers: headers,
+            body: data,
+        });
+
+        const result = await response.json();
+        console.log("Success:", result);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
 // map.on('click', onMapClick);
 
 
