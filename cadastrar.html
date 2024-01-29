@@ -26,6 +26,16 @@
             max-width: 100%;
             max-height: 100%;
         }
+
+        .collapser {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .collapser-button {
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -43,12 +53,28 @@
             <li><a href="cadastrar.html">Cadastrar a minha Comunidade</a></li>
         </ul>
     </header>
+    
+<main>
+    <div id="map" class="item" style="width: 600px; height: 450px;"></div>
 
-    <main>
-        <div id="map" class="item" style="width: 600px; height: 450px;"></div>
+    <form method="post">
+        <div class="form-group">
+            <label for="nome-igreja">Nome da igreja</label>
+            <input type="text" class="form-control" id="nome-igreja" name="nome-igreja">
+        </div>
+        <div class="form-group">
+            <label for="paroquia">Paróquia</label>
+            <input type="text" class="form-control" id="paroquia" name="paroquia">
+        </div>
+        <div class="form-group">
+            <label for="endereco">Latitude & Longitude / Clique no local no mapa</label>
+            <input type="text" class="form-control" id="lat" name="lat">
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
 
-        <div id="makerData" class="item"></div>
-    </main>
+    <span id="alert"></span>
+</main>
 
     <script src="app.js"></script>
 </body>

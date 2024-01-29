@@ -10,6 +10,8 @@ const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 map.on('click', showLocationPosition);
 
+map.invalidateSize();
+
 const popup = L.popup();
 
 // Set Location User
@@ -65,15 +67,31 @@ function buildPopup(data) {
 }
 
 function findDataMarker(e) {
+    document.querySelector('#makerData').innerHTML = "";
+    
     const nomeIgreja = e.target.info.a;
     const nomeParoquia = e.target.info.b;
 
-    let htmlBuild = "<h1>" + nomeIgreja + "</h1><h2>" + nomeParoquia + "</h2>"
+    const div = document.createElement("div");
+    div.className = "dataMakerShow";
+    const span = document.createElement("span");
+    span.className = "close";
+    span.innerHTML = "✕";
+    span.addEventListener("click", function() {
+        document.querySelector('#makerData').innerHTML = "";
+    });
+    div.appendChild(span);
 
-    document.querySelector('#makerData').innerHTML = htmlBuild;
+    const h1 = document.createElement("h1");
+    h1.classList.add("classe-h1", "outra-classe-h1");
+    h1.innerHTML = nomeIgreja
+    div.appendChild(h1);
+    const h2 = document.createElement("h2");
+    h2.classList.add("classe-h2", "outra-classe-h2");
+    h2.innerHTML = nomeParoquia
+    div.appendChild(h2);
 
-    document.querySelector('#formContent').style.display = "none";
-    document.querySelector('#makerDataContent').style.display = "block";
+    document.querySelector('#makerData').appendChild(div);
 }
 
 function showLocationPosition(e) {
@@ -116,11 +134,11 @@ document.querySelector('button[type="submit"]').addEventListener('click', functi
     document.querySelector('#lat').value = '';
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".collapser-button").forEach(function (button) {
-        button.addEventListener("click", function () {
-            const content = this.nextElementSibling; // Referencia o conteúdo colapsado
-            content.style.display = content.style.display === "none" ? "block" : "none";
-        });
-    });
-});
+// document.addEventListener("DOMContentLoaded", function () {
+//     document.querySelectorAll(".collapser-button").forEach(function (button) {
+//         button.addEventListener("click", function () {
+//             const content = this.nextElementSibling; // Referencia o conteúdo colapsado
+//             content.style.display = content.style.display === "none" ? "block" : "none";
+//         });
+//     });
+// });
