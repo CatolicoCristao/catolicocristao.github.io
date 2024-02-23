@@ -57,7 +57,7 @@ function setLocationUser(map, latitude, longitude, zoom) {
 }
 
 function loadDataMap(map) {
-    const url = "https://script.google.com/macros/s/AKfycbw-rCem8tvgz89uy2OOWYnPRy5RN0Ql977cWR-rH2n96v-BCYXXgS3QuFbW0E_RP1o2/exec";
+    const url = "https://script.google.com/macros/s/AKfycbxRuePUNeO1y7R7LcqUMlKzgvfJ-k5Y7760p3Qo2ld4TuJw2JvESO-vgiB7I-ePS2ts/exec";
 
     let headers = new Headers();
 

@@ -25,7 +25,7 @@ function loadLibMap() {
     let zoom = 12;
 
     const map = L.map('map').setView([latitude, longitude], zoom);
-    
+
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -59,7 +59,7 @@ function setLocationUser(map, latitude, longitude, zoom) {
 }
 
 function loadDataMap(map) {
-    const url = "https://script.google.com/macros/s/AKfycbw-rCem8tvgz89uy2OOWYnPRy5RN0Ql977cWR-rH2n96v-BCYXXgS3QuFbW0E_RP1o2/exec";
+    const url = "https://script.google.com/macros/s/AKfycbxRuePUNeO1y7R7LcqUMlKzgvfJ-k5Y7760p3Qo2ld4TuJw2JvESO-vgiB7I-ePS2ts/exec";
 
     let headers = new Headers();
 
@@ -101,8 +101,24 @@ function showLocationPosition(e) {
     document.querySelector('#localization').value = e.latlng.lat + ',' + e.latlng.lng;
 }
 
-document.querySelector('button[type="submit"]').addEventListener('click', function (event) {
+document.querySelector('#submit').addEventListener('click', function (event) {
     event.preventDefault();
+
+    if (!document.getElementById('form').reportValidity()) {
+        return false;
+    }
+
+    window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+
+    const button = document.querySelector('#submit');
+
+    button.getElementsByTagName('svg')[0].classList.remove('hidden');
+    button.disabled = true;
+    button.classList.remove("bg-transparent");
+    button.classList.remove("hover:bg-blue-500");
+    button.classList.remove("hover:text-white");
+    button.classList.remove("hover:border-transparent");
+    button.classList.add("bg-gray-400");
 
     const title = document.querySelector('[name="title"]').value;
     const subtitle = document.querySelector('[name="subtitle"]').value;
@@ -121,37 +137,38 @@ document.querySelector('button[type="submit"]').addEventListener('click', functi
     const saturday = document.querySelector('[name="saturday"]').value;
     const extra = document.querySelector('[name="extra"]').value;
 
-    const url = "https://script.google.com/macros/s/AKfycbw-rCem8tvgz89uy2OOWYnPRy5RN0Ql977cWR-rH2n96v-BCYXXgS3QuFbW0E_RP1o2/exec";
+    const url = "https://script.google.com/macros/s/AKfycbxRuePUNeO1y7R7LcqUMlKzgvfJ-k5Y7760p3Qo2ld4TuJw2JvESO-vgiB7I-ePS2ts/exec";
 
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
     headers.append('Access-Control-Allow-Origin', '*');
-    
+
     fetch(url, {
         mode: 'no-cors',
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
-            'a' : title,
-            'b' : subtitle,
-            'c' : localization,
-            'd' : address,
-            'e' : description,
-            'i' : sunday,
-            'j' : monday,
-            'k' : tuesday,
-            'l' : wednesday,
-            'm' : thursday,
-            'n' : friday,
-            'o' : saturday,
-            'p' : extra,
-            'f' : youtube,
-            'g' : instagram,
-            'h' : facebook,
+            'a': title,
+            'b': subtitle,
+            'c': localization,
+            'd': address,
+            'e': description,
+            'i': sunday,
+            'j': monday,
+            'k': tuesday,
+            'l': wednesday,
+            'm': thursday,
+            'n': friday,
+            'o': saturday,
+            'p': extra,
+            'f': youtube,
+            'g': instagram,
+            'h': facebook,
         })
     }).then(res => {
+        button.getElementsByTagName('svg')[0].classList.add('hidden');
         document.querySelector('#alert').classList.remove('hidden');
     });
 
