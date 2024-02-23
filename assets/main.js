@@ -100,13 +100,88 @@ function buildPopup(data) {
 function findDataMarker(e) {
     const title = e.target.info.a;
     const subtitle = e.target.info.b;
-    const description = e.target.info.c;
+    const localization = e.target.info.c;
+    const address = e.target.info.d;
+    const description = e.target.info.e;
+    const youtube = e.target.info.f;
+    const instagram = e.target.info.g;
+    const facebook = e.target.info.h;
+    const sunday = e.target.info.i;
+    const monday = e.target.info.j;
+    const tuesday = e.target.info.k;
+    const wednesday = e.target.info.l;
+    const thursday = e.target.info.m;
+    const friday = e.target.info.n;
+    const saturday = e.target.info.o;
+    const extra = e.target.info.p;
 
     document.querySelector('#data-marker').classList.remove('hidden');
 
     document.querySelector('#title').innerHTML = title;
     document.querySelector('#subtitle').innerHTML = subtitle;
+    document.querySelector('#address').innerHTML = address;
     document.querySelector('#description').innerHTML = description;
+
+    if (youtube) {
+        document.querySelector('#youtube').classList.remove('hidden');
+        document.querySelector('#youtube').getElementsByTagName('span')[0].innerHTML = youtube;
+    } else {
+        document.querySelector('#youtube').classList.add('hidden');
+    }
+
+    if (instagram) {
+        document.querySelector('#instagram').classList.remove('hidden');
+        document.querySelector('#instagram').getElementsByTagName('span')[0].innerHTML = instagram;
+    } else {
+        document.querySelector('#instagram').classList.add('hidden');
+    }
+
+    if (facebook) {
+        document.querySelector('#facebook').classList.remove('hidden');
+        document.querySelector('#facebook').getElementsByTagName('span')[0].innerHTML = facebook;
+    } else {
+        document.querySelector('#facebook').classList.add('hidden');
+    }
+
+    const weekDay = {
+        'sunday': sunday,
+        'monday': monday,
+        'tuesday': tuesday,
+        'wednesday': wednesday,
+        'thursday': thursday,
+        'friday': friday,
+        'saturday': saturday,
+        'extra': extra,
+    }
+
+    for (const [key, value] of Object.entries(weekDay)) {
+        const element = document.querySelector('#' + key)
+        if (value) {
+            element.classList.remove('hidden');
+            element.classList.add('sm:grid');
+            element.classList.add('sm:grid-cols-3');
+            
+            buildList(element.getElementsByTagName('ul')[0], value);
+        } else {
+            element.classList.add('hidden');
+            element.classList.remove('sm:grid');
+            element.classList.remove('sm:grid-cols-3');
+        }
+    }
+}
+
+function buildList(list, data) {
+    list.innerHTML = "";
+
+    if (data) {
+        data.split(',').forEach(text => {
+            list.innerHTML = list.innerHTML + itemList(text)
+        });
+    }
+}
+
+function itemList(text) {
+    return '<li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"><div class="flex w-0 flex-1 items-center"><div class="ml-4 flex min-w-0 flex-1 gap-2"><span class="truncate font-medium">' + text + '</span></div></div></li>';
 }
 
 function showDataNumber(length) {
