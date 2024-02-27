@@ -1,5 +1,31 @@
 navbarAnimationMobile();
+editData();
 loadLibMap();
+
+function editData() {
+    if (sessionStorage.getItem("key") == sessionStorage.getItem("edit-key")) {
+        const info = JSON.parse(sessionStorage.getItem("info"));
+
+        document.querySelector('[name="title"]').value = info.a;
+        document.querySelector('[name="subtitle"]').value = info.b;
+        document.querySelector('[name="localization"]').value = info.c;
+        document.querySelector('[name="address"]').value = info.d;
+        document.querySelector('[name="description"]').value = info.e;
+        document.querySelector('[name="youtube"]').value = info.f;
+        document.querySelector('[name="instagram"]').value = info.g;
+        document.querySelector('[name="facebook"]').value = info.h;
+        document.querySelector('[name="sunday"]').value = info.i;
+        document.querySelector('[name="monday"]').value = info.j;
+        document.querySelector('[name="tuesday"]').value = info.k;
+        document.querySelector('[name="wednesday"]').value = info.l;
+        document.querySelector('[name="thursday"]').value = info.m;
+        document.querySelector('[name="friday"]').value = info.n;
+        document.querySelector('[name="saturday"]').value = info.o;
+        document.querySelector('[name="extra"]').value = info.p;
+        
+        sessionStorage.clear();
+    }
+}
 
 function navbarAnimationMobile() {
     const button = document.querySelector('[aria-controls="mobile-menu"]');
@@ -75,20 +101,20 @@ function loadDataMap(map) {
         const data = Object.values(res);
 
         for (const item of data) {
-            const maker = L.marker(
+            const marker = L.marker(
                 item.c.split(','),
                 {
                     icon: L.icon({
-                        iconUrl: "maker.png",
+                        iconUrl: "marker.png",
                         iconSize: [20, 20]
                     }),
                     title: item.a
                 }
             );
-            maker.info = item;
+            marker.info = item;
 
-            maker.bindPopup(buildPopup(item));
-            maker.addTo(map);
+            marker.bindPopup(buildPopup(item));
+            marker.addTo(map);
         }
     });
 }

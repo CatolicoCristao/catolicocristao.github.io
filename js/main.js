@@ -1,6 +1,14 @@
 navbarAnimationMobile();
 
 
+// var locateControl = new L.Control.Locate();
+
+// map.addControl(locateControl);
+
+// locateControl.locate();
+
+// // Verifica se a localização do usuário está dentro de um buffer de 100 metros de um ponto
+// var isUserWithinBuffer = locateControl.isWithinBuffer(point, 100);
 
 
 function navbarAnimationMobile() {

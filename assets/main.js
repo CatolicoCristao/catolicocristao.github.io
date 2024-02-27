@@ -73,22 +73,27 @@ function loadDataMap(map) {
         const data = Object.values(res);
         showDataNumber(data.length);
 
+        let count = 0;
+
         for (const item of data) {
-            const maker = L.marker(
+            count++;
+            const marker = L.marker(
                 item.c.split(','),
                 {
                     icon: L.icon({
-                        iconUrl: "maker.png",
+                        iconUrl: "marker.png",
                         iconSize: [20, 20]
                     }),
                     title: item.a
                 }
             );
-            maker.info = item;
+            marker.info = item;
+            marker.key = count;
 
-            maker.bindPopup(buildPopup(item))
-            maker.on('click', findDataMarker);
-            maker.addTo(map);
+            marker.bindPopup(buildPopup(item))
+            marker.on('click', findDataMarker);
+            marker.addTo(map);
+            marker.setZIndexOffset(count);
         }
     });
 }
@@ -114,6 +119,7 @@ function findDataMarker(e) {
     const friday = e.target.info.n;
     const saturday = e.target.info.o;
     const extra = e.target.info.p;
+    const key = e.target.key;
 
     document.querySelector('#data-marker').classList.remove('hidden');
 
@@ -124,21 +130,21 @@ function findDataMarker(e) {
 
     if (youtube) {
         document.querySelector('#youtube').classList.remove('hidden');
-        document.querySelector('#youtube').getElementsByTagName('span')[0].innerHTML = youtube;
+        document.querySelector('#youtube').href = youtube;
     } else {
         document.querySelector('#youtube').classList.add('hidden');
     }
 
     if (instagram) {
         document.querySelector('#instagram').classList.remove('hidden');
-        document.querySelector('#instagram').getElementsByTagName('span')[0].innerHTML = instagram;
+        document.querySelector('#instagram').href = instagram;
     } else {
         document.querySelector('#instagram').classList.add('hidden');
     }
 
     if (facebook) {
         document.querySelector('#facebook').classList.remove('hidden');
-        document.querySelector('#facebook').getElementsByTagName('span')[0].innerHTML = facebook;
+        document.querySelector('#facebook').href = facebook;
     } else {
         document.querySelector('#facebook').classList.add('hidden');
     }
@@ -168,6 +174,13 @@ function findDataMarker(e) {
             element.classList.remove('sm:grid-cols-3');
         }
     }
+
+    document.querySelector("#edit-button").addEventListener("click", function() {
+        sessionStorage.setItem("edit-key", JSON.stringify(e.target.key));
+    });
+
+    sessionStorage.setItem("info", JSON.stringify(e.target.info));
+    sessionStorage.setItem("key", JSON.stringify(e.target.key));
 }
 
 function buildList(list, data) {
