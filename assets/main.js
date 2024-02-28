@@ -71,8 +71,6 @@ function loadDataMap(map) {
         return res.json();
     }).then(res => {
         const data = Object.values(res);
-        showDataNumber(data.length);
-
         let count = 0;
 
         for (const item of data) {
@@ -119,6 +117,7 @@ function findDataMarker(e) {
     const friday = e.target.info.n;
     const saturday = e.target.info.o;
     const extra = e.target.info.p;
+    const date = e.target.info.q;
     const key = e.target.key;
 
     document.querySelector('#data-marker').classList.remove('hidden');
@@ -127,6 +126,7 @@ function findDataMarker(e) {
     document.querySelector('#subtitle').innerHTML = subtitle;
     document.querySelector('#address').innerHTML = address;
     document.querySelector('#description').innerHTML = description;
+    document.querySelector('#date').innerHTML = date;
 
     if (youtube) {
         document.querySelector('#youtube').classList.remove('hidden');
@@ -195,8 +195,4 @@ function buildList(list, data) {
 
 function itemList(text) {
     return '<li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"><div class="flex w-0 flex-1 items-center"><div class="ml-4 flex min-w-0 flex-1 gap-2"><span class="truncate font-medium">' + text + '</span></div></div></li>';
-}
-
-function showDataNumber(length) {
-    document.querySelector('#data-length').innerHTML = length;
 }

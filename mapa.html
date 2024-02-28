@@ -31,26 +31,91 @@
 </head>
 
 <body>
-    <header class="header">
-        <a href="index.html" class="logo">
-            <img style="height: 45px; margin-left: 40px;" src="icon.png" alt="Logo">
-        </a>
-
-        <input class="menu-btn" type="checkbox" id="menu-btn" />
-        <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
-        <ul class="menu">
-            <li><a href="index.html">Buscar</a></li>
-            <li><a href="cadastrar.html">Cadastrar a minha Comunidade</a></li>
-        </ul>
-    </header>
-
+    <h1>Carreata de São José</h1>
     <main>
         <div id="map" class="item" style="width: 800px; height: 500px;"></div>
-
-        <div id="makerData" class="item"></div>
     </main>
 
-    <script src="mapa.js"></script>
+    <script>
+        let latitude = -3.727751;
+        let longitude = -38.590508;
+        let zoom = 15;
+
+        const map = L.map('map').setView([latitude, longitude], zoom);
+        const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        var popup = L.popup();
+
+        var latlngs = [
+            [-3.730131, -38.58893], // general alipio
+            [-3.728589, -38.585543], // independencia
+            [-3.729272, -38.583169], // eredites alencar
+            [-3.730987, -38.583445], // tenente lisboa
+            [-3.730506, -38.582335], // rio araquaia
+            [-3.729609, -38.582474], // rio araquaia
+            [-3.719655, -38.581578], // rua aberlardo ferreira
+            [-3.719518, -38.582981], // alberto ferreira
+            [-3.724012, -38.583394], // major assis
+            [-3.723555, -38.588348], // major assis
+            [-3.723579, -38.589228], // major assis
+            [-3.723172, -38.590502], // padre teodoro
+            [-3.726686, -38.591535], // independencia
+        ];
+        L.polyline(latlngs, { color: 'blue' }).addTo(map);
+
+        latlngs = [
+            [-3.726686, -38.591535], // independencia
+            [-3.723667, -38.601837], // santa maria gorete
+            [-3.724882, -38.60218], // rua 2
+            [-3.725407, -38.600354], // rua salamita portela
+            [-3.730899, -38.601907], // dona lucia pinheiro
+            [-3.731044, -38.601346], // pescadores
+            [-3.732374, -38.601746], // jangadinha
+            [-3.732577, -38.600973], // mangueira
+            [-3.731263, -38.600611], // dona lucia pinheiro
+            [-3.7316, -38.599361], // monzart lucena
+            [-3.731472, -38.599356], // monzart lucena
+            [-3.727055, -38.598125], // claudia guimarães
+            [-3.727203, -38.597543], // rua 26
+            [-3.72689, -38.597436], // quartoze
+            [-3.727519, -38.595242], // emilia
+            [-3.730273, -38.594027], // neapolis
+            [-3.730915, -38.595427], // xxix
+            [-3.731491, -38.595164], // xx
+            [-3.730859, -38.593772], // emilia
+            [-3.733426, -38.592621], // matozo filho
+            [-3.730428, -38.585942], // raimundo rocha de menezes
+            [-3.729058, -38.586532] // general alipio
+        ];
+        L.polyline(latlngs, { color: 'red' }).addTo(map);
+
+        function onClickMarker(e) {
+            console.log(e.latlng.lat + ' - ' + e.latlng.lng);
+        }
+
+        function onMapClick(e) {
+            popup.setLatLng(e.latlng)
+                .setContent(`Clique no mapa: ${e.latlng.toString()}`)
+                .openOn(map);
+        }
+
+        map.on('click', onMapClick);
+
+
+        if (navigator?.userAgentData?.mobile) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                const marker = L.marker([latitude, longitude]);
+                marker.addTo(map);
+            });
+        }
+
+    </script>
 </body>
 
 </html>

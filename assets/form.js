@@ -127,6 +127,19 @@ function showLocationPosition(e) {
     document.querySelector('#localization').value = e.latlng.lat + ',' + e.latlng.lng;
 }
 
+function getDataNow() {
+    const dataAtual = new Date();
+
+    const dia = dataAtual.getDate();
+    const mes = dataAtual.getMonth() + 1;
+    const ano = dataAtual.getFullYear();
+
+    const hora = dataAtual.getHours();
+    const minuto = dataAtual.getMinutes();
+
+    return `${dia}/${mes}/${ano} ${hora}:${minuto}`;
+}
+
 document.querySelector('#submit').addEventListener('click', function (event) {
     event.preventDefault();
 
@@ -192,6 +205,7 @@ document.querySelector('#submit').addEventListener('click', function (event) {
             'f': youtube,
             'g': instagram,
             'h': facebook,
+            'q': getDataNow()
         })
     }).then(res => {
         button.getElementsByTagName('svg')[0].classList.add('hidden');
