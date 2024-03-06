@@ -3,7 +3,7 @@ editData();
 loadLibMap();
 
 function editData() {
-    if (sessionStorage.getItem("key") == sessionStorage.getItem("edit-key")) {
+    if (sessionStorage.getItem("key") && sessionStorage.getItem("key") == sessionStorage.getItem("edit-key")) {
         const info = JSON.parse(sessionStorage.getItem("info"));
 
         document.querySelector('[name="title"]').value = info.a;
