@@ -51,11 +51,19 @@
                     </div>
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
-                            <a href="index.html" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
-                                aria-current="page">Mapa</a>
+                            <a href="index.html"
+                                class="text-gray-900 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                                Mapa
+                            </a>
                             <a href="cadastrar.html"
-                                class="text-gray-900 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Cadastrar
-                                Minha Comunidade</a>
+                                class="text-gray-900 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                                Cadastrar Minha Comunidade
+                            </a>
+                            <a href="search.html"
+                                class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+                                aria-current="page">
+                                Pesquisar
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -64,188 +72,241 @@
 
         <div class="sm:hidden hidden" id="mobile-menu">
             <div class="space-y-1 px-2 pb-3 pt-2">
-                <a href="index.html" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
-                    aria-current="page">Mapa</a>
+                <a href="index.html"
+                    class="text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                    Mapa
+                </a>
                 <a href="cadastrar.html"
-                    class="text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Cadastrar
-                    Minha Comunidade</a>
+                    class="text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                    Cadastrar Minha Comunidade
+                </a>
+                <a href="search.html" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
+                    aria-current="page">
+                    Pesquisar
+                </a>
             </div>
         </div>
     </nav>
 
+
+
     <div class="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
-        
-<form>   
-    <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-    <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
+
+        <nav class="flex mb-4" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3 rtl:space-x-reverse">
+                <li class="inline-flex items-center">
+                    <a href="index.html"
+                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                        </svg>
+                        Mapa
+                    </a>
+                </li>
+
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg class="w-3 h-3 text-gray-400 mx-1 rtl:rotate-180" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 9 4-4-4-4" />
+                        </svg>
+                        <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Pesquisar</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="mb-4">
+            <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Filtrar</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input type="search" id="search"
+                    class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Busca exata" required />
+                <button id="search-button"
+                    class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Filtrar</button>
+            </div>
         </div>
-        <input type="search" id="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
-        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
-    </div>
-</form>
 
         <div class="max-w-2xl">
             <div class="space-y-5 md:space-y-8 mb-5">
                 <div id="map" class="item w-full object-cover rounded-xl"></div>
 
-                <div id="data-marker" class="hidden">
+                <button id="you-location"
+                    class="mt-2 inline-flex items-center justify-center text-base font-medium text-center rounded-lg bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                    Me localize no mapa
+                </button>
+            </div>
+        </div>
 
-                    <div class="px-4 sm:px-0 mb-3">
-                        <h3 id="title" class="text-2xl font-semibold dark:text-white"></h3>
-                        <h4 id="subtitle" class="text-base font-semibold leading-7 text-gray-900"></h4>
-                        <span id="address" class="text-base font-semibold leading-7 text-gray-500"></span>
+        <div class="relative overflow-x-auto max-h-60">
+            <table
+                class="mb-6 w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-auto w-full overflow-y-scroll pr-2">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Comunidade
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Paróquia
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Endereço
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="table-search"></tbody>
+            </table>
+        </div>
+        <div class="relative overflow-x-auto">
+
+            <div id="data-marker" class="hidden">
+
+                <div class="px-4 sm:px-0 mb-3">
+                    <h3 id="title" class="text-2xl font-semibold dark:text-white"></h3>
+                    <h4 id="subtitle" class="text-base font-semibold leading-7 text-gray-900"></h4>
+                    <span id="address" class="text-base font-semibold leading-7 text-gray-500"></span>
+                </div>
+
+                <p id="description" class="text-lg text-gray-800 dark:text-gray-200"></p>
+
+                <div>
+                    <div class="mt-6 border-t border-gray-100">
+                        <dl class="divide-y divide-gray-100">
+
+                            <div id="extra" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900"></dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                    </ul>
+                                </dd>
+                            </div>
+
+                            <div id="sunday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Domingo</dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                    </ul>
+                                </dd>
+                            </div>
+
+                            <div id="monday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Segunda</dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                    </ul>
+                                </dd>
+                            </div>
+
+                            <div id="tuesday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Terça</dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                    </ul>
+                                </dd>
+                            </div>
+
+                            <div id="wednesday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Quarta</dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                    </ul>
+                                </dd>
+                            </div>
+
+                            <div id="thursday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Quinta</dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                    </ul>
+                                </dd>
+                            </div>
+
+                            <div id="friday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Sexta</dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                    </ul>
+                                </dd>
+                            </div>
+
+                            <div id="saturday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                <dt class="text-sm font-medium leading-6 text-gray-900">Sábado</dt>
+                                <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                    <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+                                    </ul>
+                                </dd>
+                            </div>
+
+                        </dl>
                     </div>
+                </div>
 
-                    <p id="description" class="text-lg text-gray-800 dark:text-gray-200"></p>
+                <div>
 
-                    <div>
-                        <div class="mt-6 border-t border-gray-100">
-                            <dl class="divide-y divide-gray-100">
+                    <a target="_blank" id="instagram" type="button" data-te-ripple-init data-te-ripple-color="light"
+                        class="hidden inline-flex items-center mb-2 flex rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
+                        style="background-color: #c13584">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-3.5 w-3.5" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        </svg>
+                        <span>INSTRAGRAM</span>
+                    </a>
 
-                                <div id="extra" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt class="text-sm font-medium leading-6 text-gray-900"></dt>
-                                    <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200"></ul>
-                                    </dd>
-                                </div>
+                    <a target="_blank" id="youtube" type="button" data-te-ripple-init data-te-ripple-color="light"
+                        class="hidden inline-flex items-center mb-2 flex rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
+                        style="background-color: #ff0000">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-3.5 w-3.5" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                        </svg>
+                        <span>Youtube</span>
+                    </a>
 
-                                <div id="sunday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt class="text-sm font-medium leading-6 text-gray-900">Domingo</dt>
-                                    <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200"></ul>
-                                    </dd>
-                                </div>
-
-                                <div id="monday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt class="text-sm font-medium leading-6 text-gray-900">Segunda</dt>
-                                    <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200"></ul>
-                                    </dd>
-                                </div>
-
-                                <div id="tuesday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt class="text-sm font-medium leading-6 text-gray-900">Terça</dt>
-                                    <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200"></ul>
-                                    </dd>
-                                </div>
-
-                                <div id="wednesday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt class="text-sm font-medium leading-6 text-gray-900">Quarta</dt>
-                                    <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200"></ul>
-                                    </dd>
-                                </div>
-
-                                <div id="thursday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt class="text-sm font-medium leading-6 text-gray-900">Quinta</dt>
-                                    <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200"></ul>
-                                    </dd>
-                                </div>
-
-                                <div id="friday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt class="text-sm font-medium leading-6 text-gray-900">Sexta</dt>
-                                    <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200"></ul>
-                                    </dd>
-                                </div>
-
-                                <div id="saturday" class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                    <dt class="text-sm font-medium leading-6 text-gray-900">Sábado</dt>
-                                    <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200"></ul>
-                                    </dd>
-                                </div>
-
-                            </dl>
-                        </div>
-                    </div>
-
-                    <div>
-
-                        <a target="_blank" id="instagram" type="button" data-te-ripple-init data-te-ripple-color="light"
-                            class="hidden inline-flex items-center mb-2 flex rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
-                            style="background-color: #c13584">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-3.5 w-3.5" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                            </svg>
-                            <span>INSTRAGRAM</span>
-                        </a>
-                        
-                        <a target="_blank" id="youtube" type="button" data-te-ripple-init data-te-ripple-color="light"
-                            class="hidden inline-flex items-center mb-2 flex rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
-                            style="background-color: #ff0000">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-3.5 w-3.5" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
-                            </svg>
-                            <span>Youtube</span>
-                        </a>
-
-                        <a target="_blank" id="facebook" type="button" data-te-ripple-init data-te-ripple-color="light"
-                            class="hidden inline-flex items-center mb-2 flex rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
-                            style="background-color: #1877f2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-3.5 w-3.5" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-                            </svg>
-                            <span>FACEBOOK</span>
-                        </a>
-
-                    </div>
-
-                    <p class="text-base text-body-color dark:text-dark-6 mt-2">
-                        Última alteração foi <span id="date"></span>
-                        <br>
-                        Esta informação esta desatualizada ou errada?
-                        <br>
-                        <a href="cadastrar.html" id="edit-button"
-                            class="font-medium text-blue-600 dark:text-blue-500 underline">
-                            Edite aqui.
-                        </a>
-                    </p>
+                    <a target="_blank" id="facebook" type="button" data-te-ripple-init data-te-ripple-color="light"
+                        class="hidden inline-flex items-center mb-2 flex rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
+                        style="background-color: #1877f2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-3.5 w-3.5" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                        </svg>
+                        <span>FACEBOOK</span>
+                    </a>
 
                 </div>
 
-                <section class="relative z-10 overflow-hidden bg-white dark:bg-dark">
-                    <div class="container mx-auto">
-                        <div class="-mx-4 flex flex-wrap">
-                            <div class="w-full px-4">
-                                <div class="mx-auto mb-[60px] max-w-[510px] text-center">
-                                    <h2
-                                        class="mb-3 text-3xl leading-[1.208] font-bold text-dark dark:text-white sm:text-4xl md:text-[40px]">
-                                        Mapeamento de Igrejas Católicas
-                                    </h2>
-                                    <p class="text-base text-body-color dark:text-dark-6">
-                                        Veja onde existe uma Igreja Católica Apostólica Romana, <strong>mais próximo de você.</strong>
-                                        <br>
-                                        A sua comunidade não esta aparecendo?
-                                        <br>
-                                        <a href="cadastrar.html"
-                                            class="font-medium text-blue-600 dark:text-blue-500 underline">
-                                            Cadastre aqui.
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <div id="badge"></div>
+
+                <p class="text-base text-body-color dark:text-dark-6 mt-2">
+                    Última alteração foi <span id="date"></span>
+                    <br>
+                    Esta informação esta desatualizada ou errada?
+                    <br>
+                    <a href="cadastrar.html" id="edit-button"
+                        class="font-medium text-blue-600 dark:text-blue-500 underline">
+                        Edite aqui.
+                    </a>
+                </p>
 
             </div>
         </div>
+
     </div>
 
-    <script src="assets/main.js"></script>
+    <script src="assets/search.js"></script>
 
 </body>
 

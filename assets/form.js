@@ -22,6 +22,10 @@ function editData() {
         document.querySelector('[name="friday"]').value = info.n;
         document.querySelector('[name="saturday"]').value = info.o;
         document.querySelector('[name="extra"]').value = info.p;
+
+        const filter = info.r;
+        document.querySelector('[name="Libras"]').checked = filter.includes("Libras");
+        document.querySelector('[name="Tridentino"]').checked = filter.includes("Tridentino");
         
         sessionStorage.clear();
     }
@@ -85,7 +89,7 @@ function setLocationUser(map, latitude, longitude, zoom) {
 }
 
 function loadDataMap(map) {
-    const url = "https://script.google.com/macros/s/AKfycbxRuePUNeO1y7R7LcqUMlKzgvfJ-k5Y7760p3Qo2ld4TuJw2JvESO-vgiB7I-ePS2ts/exec";
+    const url = "https://script.google.com/macros/s/AKfycbwSOo-cuu659Ch0QYjQsmDiyfq5Te9Pba6SHWK9i8AM1wZlSOQ0tQxyvC_BX0TrsugH/exec";
 
     let headers = new Headers();
 
@@ -98,7 +102,21 @@ function loadDataMap(map) {
     requestBD.then(res => {
         return res.json();
     }).then(res => {
-        const data = Object.values(res);
+        const dataResponse = Object.values(res);
+
+        const compararObjetos = (obj1, obj2) => obj1.c === obj2.c;
+
+        const data = dataResponse.reverse().reduce((acc, obj) => {
+            // Check if the object already exists in the accumulator
+            const encontrado = acc.findIndex(compararObjetos.bind(null, obj));
+
+            // If not found, add it to the accumulator
+            if (encontrado === -1) {
+                acc.push(obj);
+            }
+
+            return acc;
+        }, []);
 
         for (const item of data) {
             const marker = L.marker(
@@ -176,7 +194,17 @@ document.querySelector('#submit').addEventListener('click', function (event) {
     const saturday = document.querySelector('[name="saturday"]').value;
     const extra = document.querySelector('[name="extra"]').value;
 
-    const url = "https://script.google.com/macros/s/AKfycbxRuePUNeO1y7R7LcqUMlKzgvfJ-k5Y7760p3Qo2ld4TuJw2JvESO-vgiB7I-ePS2ts/exec";
+    let filter = '';
+
+    if (document.querySelector('[name="Libras"]').checked) {
+        filter += " Libras ";
+    }
+
+    if (document.querySelector('[name="Tridentino"]').checked) {
+        filter += " Tridentino ";
+    }
+
+    const url = "https://script.google.com/macros/s/AKfycbwSOo-cuu659Ch0QYjQsmDiyfq5Te9Pba6SHWK9i8AM1wZlSOQ0tQxyvC_BX0TrsugH/exec";
 
     let headers = new Headers();
 
@@ -194,6 +222,9 @@ document.querySelector('#submit').addEventListener('click', function (event) {
             'c': localization,
             'd': address,
             'e': description,
+            'f': youtube,
+            'g': instagram,
+            'h': facebook,
             'i': sunday,
             'j': monday,
             'k': tuesday,
@@ -202,10 +233,8 @@ document.querySelector('#submit').addEventListener('click', function (event) {
             'n': friday,
             'o': saturday,
             'p': extra,
-            'f': youtube,
-            'g': instagram,
-            'h': facebook,
-            'q': getDataNow()
+            'q': getDataNow(),
+            'r': filter
         })
     }).then(res => {
         button.getElementsByTagName('svg')[0].classList.add('hidden');

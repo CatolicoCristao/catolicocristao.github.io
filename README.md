@@ -8,3 +8,5 @@
 - Listar padroeiros
 - Dados estruturados
 - Criador de Mapas de procisões
+
+- salvar busca no storage e recarregar página
