@@ -1,6 +1,19 @@
 navbarAnimationMobile();
 editData();
-loadLibMap();
+
+const map = loadLibMap();
+
+var markerAdd = L.marker(
+    [0, 0],
+    {
+        icon: L.icon({
+            iconUrl: "marker-edit.png",
+            iconSize: [30, 30]
+        }),
+        title: "Nova Marcação"
+    }
+);
+markerAdd.addTo(map);
 
 function editData() {
     if (sessionStorage.getItem("key") && sessionStorage.getItem("key") == sessionStorage.getItem("edit-key")) {
@@ -101,8 +114,10 @@ function loadDataMap(map) {
 
     requestBD.then(res => {
         return res.json();
-    }).then(res => {
+        }).then(res => {
         const dataResponse = Object.values(res);
+        // remove head
+        dataResponse.shift();
 
         const compararObjetos = (obj1, obj2) => obj1.c === obj2.c;
 
@@ -112,7 +127,10 @@ function loadDataMap(map) {
 
             // If not found, add it to the accumulator
             if (encontrado === -1) {
-                acc.push(obj);
+                // validate infos
+                if (obj.c != "") {
+                    acc.push(obj);
+                }
             }
 
             return acc;
@@ -142,6 +160,9 @@ function buildPopup(data) {
 }
 
 function showLocationPosition(e) {
+    markerAdd.setLatLng([e.latlng.lat, e.latlng.lng]);
+    map.setView([e.latlng.lat, e.latlng.lng], '15');
+
     document.querySelector('#localization').value = e.latlng.lat + ',' + e.latlng.lng;
 }
 
@@ -243,3 +264,41 @@ document.querySelector('#submit').addEventListener('click', function (event) {
 
     document.querySelector('#form').reset();
 });
+
+// Variável para armazenar o temporizador
+let timeoutId;
+
+// Função para lidar com o evento de entrada no campo de texto
+document.getElementById('address').addEventListener('input', function() {
+    // Cancelar o temporizador anterior, se houver
+    clearTimeout(timeoutId);
+
+    // Configurar um novo temporizador
+    timeoutId = setTimeout(inputLatLonInMap, 500); // 500 milissegundos de atraso (ajuste conforme necessário)
+});
+
+function inputLatLonInMap() {
+    const address = document.getElementById('address').value;
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        if (data && data.length > 0) {
+            const { lat, lon } = data[0];
+
+            const latitude = lat;
+            const longitude = lon;
+
+            markerAdd.setLatLng([latitude, longitude]);
+            map.setView([latitude, longitude], '15');
+
+            document.querySelector('#localization').value = lat + ',' + lon;
+        } else {
+            console.log('Endereço não encontrado');
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao processar a solicitação:', error);
+    });
+}

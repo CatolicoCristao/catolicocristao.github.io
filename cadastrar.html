@@ -47,7 +47,10 @@
 
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <div class="flex flex-shrink-0 items-center">
-                        <img class="h-8 w-auto" src="icon.png" alt="Your Company">
+                        <a href="index.html" class="font-medium"
+                                aria-current="page">
+                            <img class="h-8 w-auto" src="icon.png" alt="Sou Católico, Sou Cristão">
+                        </a>
                     </div>
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
@@ -91,7 +94,6 @@
     <!-- Container -->
     <div class="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
         <div class="max-w-2xl">
-
 
             <nav class="flex mb-4" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3 rtl:space-x-reverse">
@@ -160,15 +162,20 @@
                                             </div>
                                             <div class="mb-6">
                                                 Endereço
-                                                <input type="text" name="address" required placeholder="Endereço"
+                                                <input type="text" name="address" id="address" required placeholder="Endereço"
                                                     class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none" />
                                             </div>
                                             <div class="mb-6">
-                                                <span>Clique no Mapa o local exato da sua comunidade!</span>
+                                                <span>
+                                                    Insira um endereço acima e um marcador irá aparecer no mapa.
+                                                    </br>
+                                                    O marcador vermelho esta errado no mapa?
+                                                    </br>
+                                                    <strong>Clique no Mapa o local exato da sua comunidade!</strong>
+                                                </span>
                                                 <div id="map" class="item w-full object-cover rounded-xl"></div>
-                                                <input type="text" name="localization" required id="localization"
-                                                    placeholder="Latidude/longitude (Clique no Mapa)"
-                                                    class="border-stroke dark:border-dark-3 dark:text-dark-6 dark:bg-dark text-body-color focus:border-primary w-full rounded border py-3 px-[14px] text-base outline-none" />
+                                                <input type="hidden" name="localization" required id="localization"
+                                                    placeholder="Latidude/longitude (Clique no Mapa)" />
                                             </div>
                                         </div>
 

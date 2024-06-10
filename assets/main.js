@@ -71,6 +71,8 @@ function loadDataMap(map) {
         return res.json();
     }).then(res => {
         const dataResponse = Object.values(res);
+        // remove head
+        dataResponse.shift();
         let count = 0;
 
         const compararObjetos = (obj1, obj2) => obj1.c === obj2.c;
@@ -81,7 +83,10 @@ function loadDataMap(map) {
 
             // If not found, add it to the accumulator
             if (encontrado === -1) {
-                acc.push(obj);
+                // validate infos
+                if (obj.c != "") {
+                    acc.push(obj);
+                }
             }
 
             return acc;
