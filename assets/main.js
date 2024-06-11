@@ -1,5 +1,15 @@
 navbarAnimationMobile();
+
+const params = new URLSearchParams(window.location.search);
+const keyView = params.get('key');
+const title = params.get('name');
+if (keyView) {
+    document.querySelector('#data-marker').classList.remove('hidden');
+    document.querySelector('#title').innerHTML = title;
+}
+
 loadLibMap();
+
 
 function navbarAnimationMobile() {
     const button = document.querySelector('[aria-controls="mobile-menu"]');
@@ -106,11 +116,16 @@ function loadDataMap(map) {
             );
             marker.info = item;
             marker.key = count;
-
+            
             marker.bindPopup(buildPopup(item))
             marker.on('click', findDataMarker);
             marker.addTo(map);
             marker.setZIndexOffset(count);
+
+            if (count == keyView) {
+                buildDataMarker(item, count)
+                map.setView(item.c.split(','), '19');
+            }
         }
 
         console.log(count);
@@ -122,25 +137,28 @@ function buildPopup(data) {
 }
 
 function findDataMarker(e) {
-    const title = e.target.info.a;
-    const subtitle = e.target.info.b;
-    const localization = e.target.info.c;
-    const address = e.target.info.d;
-    const description = e.target.info.e;
-    const youtube = e.target.info.f;
-    const instagram = e.target.info.g;
-    const facebook = e.target.info.h;
-    const sunday = e.target.info.i;
-    const monday = e.target.info.j;
-    const tuesday = e.target.info.k;
-    const wednesday = e.target.info.l;
-    const thursday = e.target.info.m;
-    const friday = e.target.info.n;
-    const saturday = e.target.info.o;
-    const extra = e.target.info.p;
-    const date = e.target.info.q;
-    const filter = e.target.info.r;
-    const key = e.target.key;
+    buildDataMarker(e.target.info, e.target.key)
+}
+
+function buildDataMarker(info, key){
+    const title = info.a;
+    const subtitle = info.b;
+    const localization = info.c;
+    const address = info.d;
+    const description = info.e;
+    const youtube = info.f;
+    const instagram = info.g;
+    const facebook = info.h;
+    const sunday = info.i;
+    const monday = info.j;
+    const tuesday = info.k;
+    const wednesday = info.l;
+    const thursday = info.m;
+    const friday = info.n;
+    const saturday = info.o;
+    const extra = info.p;
+    const date = info.q;
+    const filter = info.r;
 
     document.querySelector('#data-marker').classList.remove('hidden');
 
@@ -210,11 +228,23 @@ function findDataMarker(e) {
     }
 
     document.querySelector("#edit-button").addEventListener("click", function() {
-        sessionStorage.setItem("edit-key", JSON.stringify(e.target.key));
+        sessionStorage.setItem("edit-key", JSON.stringify(key));
     });
 
-    sessionStorage.setItem("info", JSON.stringify(e.target.info));
-    sessionStorage.setItem("key", JSON.stringify(e.target.key));
+    let url = new URL(window.location.href);
+    url.searchParams.set('key', key);
+    url.searchParams.set('name', title);
+    const link = document.getElementById('shared-button');
+    link.href = url;
+
+    const sharedWhats = document.getElementById('shared-button-whats');
+    document.getElementById('shared-div-whats').classList.remove('hidden');
+    let urlWhats = new URL(sharedWhats.href);
+    urlWhats.searchParams.set('text', title + '\nno endereço: ' + address + '\nno link: ' + url);
+    sharedWhats.href = urlWhats;
+
+    sessionStorage.setItem("info", JSON.stringify(info));
+    sessionStorage.setItem("key", JSON.stringify(key));
 }
 
 function buildList(list, data) {
