@@ -68,18 +68,20 @@ function setLocationUser(map, latitude, longitude, zoom) {
 
 function loadDataMap(map) {
     const url = "https://script.google.com/macros/s/AKfycbwSOo-cuu659Ch0QYjQsmDiyfq5Te9Pba6SHWK9i8AM1wZlSOQ0tQxyvC_BX0TrsugH/exec";
-
+    
     let headers = new Headers();
-
+    
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
     headers.append('Access-Control-Allow-Origin', '*');
-
+    
     const requestBD = fetch(url, headers);
-
+    
     requestBD.then(res => {
         return res.json();
     }).then(res => {
+        let viewSucess = false;
+
         const dataResponse = Object.values(res);
         // remove head
         dataResponse.shift();
@@ -125,10 +127,13 @@ function loadDataMap(map) {
             if (count == keyView) {
                 buildDataMarker(item, count)
                 map.setView(item.c.split(','), '19');
+                viewSucess = true;
             }
         }
 
-        console.log(count);
+        if (!viewSucess) {
+            document.querySelector('#data-marker').classList.add('hidden');
+        }
     });
 }
 
