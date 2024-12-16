@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Obras de Promoção Humana</title>
+    <title>Cadastro de Obras de Promoção Humana - Arquidiocese de Fortaleza</title>
+
+    <meta property="og:title" content="Cadastro de Obras de Promoção Humana - Arquidiocese de Fortaleza">
+    <meta property="og:description" content="Este formulário tem como objetivo catalogar as ações de promoção humana realizadas pelas expressões eclesiais da Arquidiocese de Fortaleza, permitindo o acompanhamento e apoio das iniciativas sociais que beneficiam a comunidade.">
+    <meta property="og:image" content="brasao-arqfor.svg">
+    <meta property="og:type" content="website">
+        
+    <meta name="description" content="Cadastro de obras sociais e ações de promoção humana da Arquidiocese de Fortaleza. Formulário para organizar e atualizar iniciativas beneficentes.">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         // Função para adicionar novos campos de ação
@@ -88,9 +96,12 @@
             const url = 'https://script.google.com/macros/s/AKfycbxe4NLZaLwid41Rgto_3ykV75nlzZJKITSwVq82q3RRanfjvuO_aR-Vs7T_39JyKsej/exec';
 
             fetch(url, {
+                mode: 'no-cors',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
                 },
                 body: JSON.stringify(dados)
             })
