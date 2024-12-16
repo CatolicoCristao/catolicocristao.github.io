@@ -27,7 +27,7 @@
             const novaAcao = document.createElement('div');
             novaAcao.classList.add('bg-gray-100', 'p-4', 'rounded-lg', 'mb-4', 'space-y-4');
             novaAcao.innerHTML = `
-                <h3 class="text-lg font-semibold text-gray-800">Nova Ação de Promoção Humana</h3>
+                <h3 class="text-lg font-semibold text-gray-800">Ação de Promoção Humana</h3>
                 <label for="nome_acao" class="block text-gray-700 font-medium mb-2">Nome da Ação de Promoção Humana:</label>
                 <input type="text" name="nome_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: Distribuição de Sopão" aria-required="true">
 
@@ -157,7 +157,7 @@
             <fieldset class="mb-8">
                 <legend class="text-xl font-semibold text-gray-800 mb-4">Dados da Expressão Eclesial</legend>
                 <label for="nome_eclesial" class="block text-gray-700 font-medium mb-2">Nome da Expressão Eclesial:</label>
-                <input type="text" id="nome_eclesial" name="nome_eclesial" class="w-full p-3 border border-gray-300 rounded-lg" required aria-required="true">
+                <input type="text" id="nome_eclesial" name="nome_eclesial" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Paróquia, Nova Comunidade , Serviço, Movimento, Pastoral..." aria-required="true">
 
                 <label for="endereco" class="block text-gray-700 font-medium mt-4 mb-2">Endereço Completo:</label>
                 <input type="text" id="endereco" name="endereco" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Rua, Bairro, Cidade, Estado, CEP" aria-required="true">
@@ -182,7 +182,7 @@
             <fieldset class="mb-8">
                 <legend class="text-xl font-semibold text-gray-800 mb-4">Ações de Promoção Humana</legend>
                 <div id="acoes-container"></div>
-                <button type="button" onclick="adicionarAcao()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg">Adicionar Nova Ação</button>
+                <button type="button" onclick="adicionarAcao()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg">Adicionar Outra Ação</button>
             </fieldset>
 
             <div id="overlay" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden z-50">
@@ -203,9 +203,13 @@
 
             <!-- Botão de envio -->
             <div class="flex justify-center">
-                <button type="submit" class="bg-green-600 text-white px-8 py-3 rounded-lg">Cadastrar Ação</button>
+                <button type="submit" class="bg-green-600 text-white px-8 py-3 rounded-lg">Cadastrar</button>
             </div>
         </form>
+
+        <script>
+            adicionarAcao()
+        </script>
     </div>
 </body>
 </html>
