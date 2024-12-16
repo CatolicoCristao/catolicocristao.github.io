@@ -85,8 +85,18 @@
                 });
             }
 
-            // Converte os dados para JSON e exibe no console
-            console.log(JSON.stringify(dados, null, 2));
+            const url = 'https://script.google.com/macros/s/AKfycbxe4NLZaLwid41Rgto_3ykV75nlzZJKITSwVq82q3RRanfjvuO_aR-Vs7T_39JyKsej/exec';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dados)
+            })
+            .then(response => response.json())
+            .then(data => console.log('Sucesso:', data))
+            .catch((error) => console.error('Erro:', error));
         }
     </script>
 </head>
