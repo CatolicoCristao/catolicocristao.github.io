@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Obras de Promoção Humana - Arquidiocese de Fortaleza</title>
-
     <meta property="og:title" content="Cadastro de Obras de Promoção Humana - Arquidiocese de Fortaleza">
     <meta property="og:description" content="Este formulário tem como objetivo catalogar as ações de promoção humana realizadas pelas expressões eclesiais da Arquidiocese de Fortaleza, permitindo o acompanhamento e apoio das iniciativas sociais que beneficiam a comunidade.">
     <meta property="og:image" content="brasao-arqfor.svg">
     <meta property="og:type" content="website">
-        
+    
+    <meta name="twitter:title" content="Cadastro de Obras de Promoção Humana - Arquidiocese de Fortaleza">
+    <meta name="twitter:description" content="Este formulário tem como objetivo catalogar as ações de promoção humana realizadas pelas expressões eclesiais da Arquidiocese de Fortaleza, permitindo o acompanhamento e apoio das iniciativas sociais que beneficiam a comunidade.">
+    <meta name="twitter:image" content="brasao-arqfor.svg">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="description" content="Cadastro de obras sociais e ações de promoção humana da Arquidiocese de Fortaleza. Formulário para organizar e atualizar iniciativas beneficentes.">
+    <title>Cadastro de Obras de Promoção Humana</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -21,18 +24,17 @@
             novaAcao.classList.add('bg-gray-100', 'p-4', 'rounded-lg', 'mb-4', 'space-y-4');
             novaAcao.innerHTML = `
                 <h3 class="text-lg font-semibold text-gray-800">Nova Ação de Promoção Humana</h3>
-
                 <label for="nome_acao" class="block text-gray-700 font-medium mb-2">Nome da Ação de Promoção Humana:</label>
-                <input type="text" name="nome_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: Distribuição de Sopão">
+                <input type="text" name="nome_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: Distribuição de Sopão" aria-required="true">
 
                 <label for="ano_criacao" class="block text-gray-700 font-medium mt-4 mb-2">Ano de Criação:</label>
-                <input type="number" name="ano_criacao[]" class="w-full p-3 border border-gray-300 rounded-lg" required min="1900" max="2100">
+                <input type="number" name="ano_criacao[]" class="w-full p-3 border border-gray-300 rounded-lg" required min="1900" max="2100" aria-required="true">
 
                 <label for="quantidade_pessoas" class="block text-gray-700 font-medium mt-4 mb-2">Atende Quantas Pessoas?</label>
-                <input type="number" name="quantidade_pessoas[]" class="w-full p-3 border border-gray-300 rounded-lg" required min="1">
+                <input type="number" name="quantidade_pessoas[]" class="w-full p-3 border border-gray-300 rounded-lg" required min="1" aria-required="true">
 
                 <label for="frequencia_acao" class="block text-gray-700 font-medium mt-4 mb-2">Frequência da Ação:</label>
-                <select name="frequencia_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required>
+                <select name="frequencia_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required aria-required="true">
                     <option value="diária">Diária</option>
                     <option value="semanal">Semanal</option>
                     <option value="mensal">Mensal</option>
@@ -41,18 +43,26 @@
                 </select>
 
                 <label for="quantidade_voluntarios" class="block text-gray-700 font-medium mt-4 mb-2">Quantos Voluntários Estão Envolvidos?</label>
-                <input type="number" name="quantidade_voluntarios[]" class="w-full p-3 border border-gray-300 rounded-lg" required min="1">
+                <input type="number" name="quantidade_voluntarios[]" class="w-full p-3 border border-gray-300 rounded-lg" required min="1" aria-required="true">
 
                 <label for="resumo_acao" class="block text-gray-700 font-medium mt-4 mb-2">Resumo da Ação:</label>
-                <textarea name="resumo_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Descreva de forma breve como a ação é realizada"></textarea>
+                <textarea name="resumo_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Descreva de forma breve como a ação é realizada" aria-required="true"></textarea>
 
                 <label for="forma_ajudar" class="block text-gray-700 font-medium mt-4 mb-2">Forma de Ajudar:</label>
-                <textarea name="forma_ajudar[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: Doações de alimentos, trabalho voluntário, etc."></textarea>
+                <textarea name="forma_ajudar[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: Doações de alimentos, trabalho voluntário, etc." aria-required="true"></textarea>
+
+                <button type="button" onclick="removerAcao(this)" class="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg">Remover Ação</button>
             `;
             container.appendChild(novaAcao);
         }
 
-        // Função para capturar dados do formulário e gerar JSON
+        // Função para remover uma ação
+        function removerAcao(button) {
+            const acaoDiv = button.parentElement;
+            acaoDiv.remove();
+        }
+
+        // Função para capturar dados do formulário e enviar para o Google Apps Script
         function capturarDados(event) {
             event.preventDefault(); // Impede o envio do formulário para o servidor
 
@@ -93,7 +103,13 @@
                 });
             }
 
-            const url = 'https://script.google.com/macros/s/AKfycbxe4NLZaLwid41Rgto_3ykV75nlzZJKITSwVq82q3RRanfjvuO_aR-Vs7T_39JyKsej/exec';
+            console.log("Dados para envio:", dados);
+
+            const overlay = document.getElementById('overlay');
+            overlay.classList.remove('hidden');
+
+            // Envia os dados para o Google Apps Script via fetch
+            const url = 'https://script.google.com/macros/s/AKfycbwEe4IFgiYEr48ljGbKpDINP3HHkWfLsJZyP8WoAGt8uS_YiPfqQHllVXKJk9MUdnmO/exec';
 
             fetch(url, {
                 mode: 'no-cors',
@@ -105,100 +121,87 @@
                 },
                 body: JSON.stringify(dados)
             })
-            .then(response => response.json())
-            .then(data => console.log('Sucesso:', data))
-            .catch((error) => console.error('Erro:', error));
+            .then(response => response.json());
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                document.getElementById('feedback').classList.remove('hidden');
+            }, 5000);
         }
     </script>
 </head>
 <body class="bg-gray-100 py-12">
-
-<!-- Cabeçalho com o brasão e objetivo do cadastro -->
-<header class="bg-blue-800 text-white py-6 mb-8">
-    <div class="max-w-4xl mx-auto flex items-center justify-center space-x-4">
-        <img src="brasao-arqfor.svg" alt="Brasão da Arquidiocese de Fortaleza" class="h-32">
-        <div class="text-center">
-            <h1 class="text-3xl font-semibold">Cadastro de Obras de Promoção Humana</h1>
-            <p class="mt-2 text-lg">Este formulário tem como objetivo catalogar as ações de promoção humana realizadas pelas expressões eclesiais da Arquidiocese de Fortaleza, permitindo o acompanhamento e apoio das iniciativas sociais que beneficiam a comunidade.</p>
+    <!-- Cabeçalho -->
+    <header class="bg-blue-800 text-white py-6 mb-8">
+        <div class="max-w-4xl mx-auto flex items-center justify-center space-x-4">
+            <img src="brasao-arqfor.svg" alt="Brasão da Arquidiocese de Fortaleza" class="h-32" role="img" aria-label="Brasão da Arquidiocese de Fortaleza">
+            <div class="text-center">
+                <h1 class="text-3xl font-semibold">Cadastro de Obras de Promoção Humana</h1>
+                <p class="mt-2 text-lg">Este formulário tem como objetivo catalogar as ações de promoção humana realizadas pelas expressões eclesiais da Arquidiocese de Fortaleza, permitindo o acompanhamento e apoio das iniciativas sociais que beneficiam a comunidade.</p>
+            </div>
         </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-8 border border-gray-300">
+        <p class="text-center text-lg text-gray-700">Preencha os dados abaixo para cadastrar as obras sociais realizadas pelas expressões eclesiais da Arquidiocese de Fortaleza, como distribuição de cestas básicas, festas para crianças e ações terapêuticas, etc.</p>
     </div>
-</header>
 
-<div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Cadastro de Obras de Promoção Humana</h2>
-    <form onsubmit="capturarDados(event)">
-        <!-- Dados da expressão eclesial -->
-        <fieldset class="mb-8">
-            <legend class="text-xl font-semibold text-gray-800 mb-4">Dados da Expressão Eclesial</legend>
-            
-            <label for="nome_eclesial" class="block text-gray-700 font-medium mb-2">Nome da Expressão Eclesial:</label>
-            <input type="text" id="nome_eclesial" name="nome_eclesial" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: Paróquia São José, Pastoral, Nova Comunidade , Serviço , Movimento etc">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mb-6">Cadastro de Obras e Ações</h2>
+        
+        <form onsubmit="capturarDados(event)">
+            <fieldset class="mb-8">
+                <legend class="text-xl font-semibold text-gray-800 mb-4">Dados da Expressão Eclesial</legend>
+                <label for="nome_eclesial" class="block text-gray-700 font-medium mb-2">Nome da Expressão Eclesial:</label>
+                <input type="text" id="nome_eclesial" name="nome_eclesial" class="w-full p-3 border border-gray-300 rounded-lg" required aria-required="true">
 
-            <label for="endereco" class="block text-gray-700 font-medium mt-4 mb-2">Endereço Completo:</label>
-            <input type="text" id="endereco" name="endereco" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: Rua X, nº 123, Fortaleza - CE">
+                <label for="endereco" class="block text-gray-700 font-medium mt-4 mb-2">Endereço Completo:</label>
+                <input type="text" id="endereco" name="endereco" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Rua, Bairro, Cidade, Estado, CEP" aria-required="true">
 
-            <label for="telefone" class="block text-gray-700 font-medium mt-4 mb-2">Telefone:</label>
-            <input type="tel" id="telefone" name="telefone" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: (85) 1234-5678">
+                <label for="telefone" class="block text-gray-700 font-medium mt-4 mb-2">Telefone:</label>
+                <input type="tel" id="telefone" name="telefone" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: (85) 1234-5678" aria-required="true">
 
-            <label for="email" class="block text-gray-700 font-medium mt-4 mb-2">Email:</label>
-            <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: contato@paroquiasaojose.org">
+                <label for="email" class="block text-gray-700 font-medium mt-4 mb-2">E-mail:</label>
+                <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: contato@paroquiasaojose.com.br" aria-required="true">
 
-            <label for="site" class="block text-gray-700 font-medium mt-4 mb-2">Site:</label>
-            <input type="url" id="site" name="site" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Ex: www.paroquiasaojose.org">
+                <label for="site" class="block text-gray-700 font-medium mt-4 mb-2">Site:</label>
+                <input type="url" id="site" name="site" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="https://www.paroquiasaojose.com.br">
 
-            <label for="instagram" class="block text-gray-700 font-medium mt-4 mb-2">Instagram:</label>
-            <input type="text" id="instagram" name="instagram" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Ex: @paroquiasaojose">
-            
-            <label for="outros" class="block text-gray-700 font-medium mt-4 mb-2">Outros:</label>
-            <input type="text" id="outros" name="outros" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Ex: Facebook, WhatsApp, etc.">
-        </fieldset>
+                <label for="instagram" class="block text-gray-700 font-medium mt-4 mb-2">Instagram:</label>
+                <input type="text" id="instagram" name="instagram" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Ex: @paroquiasaojose">
 
-        <!-- Dados das Ações de Promoção Humana -->
-        <fieldset class="mb-8">
-            <legend class="text-xl font-semibold text-gray-800 mb-4">Ações de Promoção Humana</legend>
-            <div id="acoes-container" class="space-y-4">
-                <!-- Ação padrão (uma ação inicial) -->
-                <div class="bg-gray-100 p-4 rounded-lg space-y-4">
-                    <h3 class="text-lg font-semibold text-gray-800">Nova Ação de Promoção Humana</h3>
+                <label for="outros" class="block text-gray-700 font-medium mt-4 mb-2">Outros Contatos:</label>
+                <input type="text" id="outros" name="outros" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Ex: WhatsApp, outros e-mails, etc.">
+            </fieldset>
 
-                    <label for="nome_acao" class="block text-gray-700 font-medium mb-2">Nome da Ação de Promoção Humana:</label>
-                    <input type="text" name="nome_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: Distribuição de Sopão">
+            <!-- Ações de Promoção Humana -->
+            <fieldset class="mb-8">
+                <legend class="text-xl font-semibold text-gray-800 mb-4">Ações de Promoção Humana</legend>
+                <div id="acoes-container"></div>
+                <button type="button" onclick="adicionarAcao()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg">Adicionar Nova Ação</button>
+            </fieldset>
 
-                    <label for="ano_criacao" class="block text-gray-700 font-medium mt-4 mb-2">Ano de Criação:</label>
-                    <input type="number" name="ano_criacao[]" class="w-full p-3 border border-gray-300 rounded-lg" required min="1900" max="2100">
-
-                    <label for="quantidade_pessoas" class="block text-gray-700 font-medium mt-4 mb-2">Atende Quantas Pessoas?</label>
-                    <input type="number" name="quantidade_pessoas[]" class="w-full p-3 border border-gray-300 rounded-lg" required min="1">
-
-                    <label for="frequencia_acao" class="block text-gray-700 font-medium mt-4 mb-2">Frequência da Ação:</label>
-                    <select name="frequencia_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required>
-                        <option value="diária">Diária</option>
-                        <option value="semanal">Semanal</option>
-                        <option value="mensal">Mensal</option>
-                        <option value="anual">Anual</option>
-                        <option value="pontual">Pontual</option>
-                    </select>
-
-                    <label for="quantidade_voluntarios" class="block text-gray-700 font-medium mt-4 mb-2">Quantos Voluntários Estão Envolvidos?</label>
-                    <input type="number" name="quantidade_voluntarios[]" class="w-full p-3 border border-gray-300 rounded-lg" required min="1">
-
-                    <label for="resumo_acao" class="block text-gray-700 font-medium mt-4 mb-2">Resumo da Ação:</label>
-                    <textarea name="resumo_acao[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Descreva de forma breve como a ação é realizada"></textarea>
-
-                    <label for="forma_ajudar" class="block text-gray-700 font-medium mt-4 mb-2">Forma de Ajudar:</label>
-                    <textarea name="forma_ajudar[]" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Ex: Doações de alimentos, trabalho voluntário, etc."></textarea>
+            <div id="overlay" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden z-50">
+                <div class="flex flex-col items-center justify-center bg-gray-900 p-6 rounded-lg shadow-lg">
+                    <div class="border-t-4 border-l-4 border-r-4 border-b-4 border-transparent border-t-white border-l-white border-r-white border-b-white rounded-full animate-spin w-16 h-16 mb-4"></div>
+                    <div class="text-white text-lg font-semibold">Enviando...</div>
                 </div>
             </div>
-            <!-- Botão para adicionar mais ações -->
-            <button type="button" onclick="adicionarAcao()" class="mt-4 bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600">Adicionar Nova Ação</button>
-        </fieldset>
 
-        <!-- Botão de envio -->
-        <div class="text-center">
-            <button type="submit" class="bg-green-500 text-white py-3 px-6 rounded-lg hover:bg-green-600">Cadastrar Ação</button>
-        </div>
-    </form>
-</div>
+            <div id="feedback" class="hidden text-center text-green-600 mt-4 px-6 py-4 bg-green-100 border border-green-600 rounded-lg shadow-lg mb-4">
+                <div class="flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-600 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <p class="text-lg font-semibold">Ação cadastrada com sucesso!</p>
+                </div>
+            </div>
 
+            <!-- Botão de envio -->
+            <div class="flex justify-center">
+                <button type="submit" class="bg-green-600 text-white px-8 py-3 rounded-lg">Cadastrar Ação</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
