@@ -25,7 +25,7 @@
         function adicionarAcao() {
             const container = document.getElementById('acoes-container');
             const novaAcao = document.createElement('div');
-            novaAcao.classList.add('bg-gray-100', 'p-4', 'rounded-lg', 'mb-4', 'space-y-4');
+            novaAcao.classList.add('bg-gray-100', 'p-4', 'rounded-lg', 'mb-4', 'space-y-4', 'border', 'border-gray-300');
             novaAcao.innerHTML = `
                 <h3 class="text-lg font-semibold text-gray-800">Ação de Promoção Humana</h3>
                 <label for="nome_acao" class="block text-gray-700 font-medium mb-2">Nome da Ação de Promoção Humana:</label>
@@ -70,6 +70,10 @@
         function capturarDados(event) {
             event.preventDefault(); // Impede o envio do formulário para o servidor
 
+            // Desabilitar o botão de envio para evitar clique duplo
+            const submitButton = document.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+
             const formData = new FormData(document.querySelector('form'));
             let dados = {};
 
@@ -107,8 +111,6 @@
                 });
             }
 
-            console.log("Dados para envio:", dados);
-
             const overlay = document.getElementById('overlay');
             overlay.classList.remove('hidden');
 
@@ -125,19 +127,19 @@
                 },
                 body: JSON.stringify(dados)
             })
-            .then(response => response.json());
-            
-            setTimeout(() => {
+            .then(response => response.json())
+            .finally(() => {
                 overlay.classList.add('hidden');
+                submitButton.disabled = false;
                 document.getElementById('feedback').classList.remove('hidden');
-            }, 5000);
+            });
         }
     </script>
 </head>
 <body class="bg-gray-100 py-12">
     <!-- Cabeçalho -->
-    <header class="bg-blue-800 text-white py-6 mb-8">
-        <div class="max-w-4xl mx-auto flex items-center justify-center space-x-4">
+    <header class="bg-[#F2EDD4] text-[#1D1D1D] py-6 mb-4">
+        <div class="max-w-4xl mx-auto flex items-center justify-center space-x-4 p-4">
             <img src="brasao-arqfor.svg" alt="Brasão da Arquidiocese de Fortaleza" class="h-32" role="img" aria-label="Brasão da Arquidiocese de Fortaleza">
             <div class="text-center">
                 <h1 class="text-3xl font-semibold">Cadastro de Obras de Promoção Humana</h1>
@@ -146,7 +148,7 @@
         </div>
     </header>
 
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-8 border border-gray-300">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg mb-8 border border-gray-300 mx-4">
         <p class="text-center text-lg text-gray-700">Preencha os dados abaixo para cadastrar as obras sociais realizadas pelas expressões eclesiais da Arquidiocese de Fortaleza, como distribuição de cestas básicas, festas para crianças e ações terapêuticas, etc.</p>
     </div>
 
