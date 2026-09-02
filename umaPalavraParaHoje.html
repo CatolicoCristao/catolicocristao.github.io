@@ -1,0 +1,1411 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#5E3575">
+  <meta name="description" content="Experiência diária de oração, reflexão e inspiração.">
+
+  <title>Uma palavra para hoje</title>
+
+  <!-- V1: Tailwind via CDN para prototipagem. Em produção, compile o Tailwind localmente. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- V1: Lucide. Para produção durável, baixe/pine os assets localmente. -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --primary: #5E3575;
+      --primary-light: #A78BB8;
+      --primary-lighter: #D8CCE0;
+      --primary-soft: #D8CCE0;
+      --primary-dark: #352043;
+      --primary-glow: rgba(94, 53, 117, .18);
+
+      --background: #FAF9F7;
+      --foreground: #29222E;
+      --muted: #756B7D;
+
+      --atmo-background: #FAF9F7;
+      --atmo-gradient: linear-gradient(
+        165deg,
+        #F7EBDD 0%,
+        #FAF9F7 42%,
+        #E5EDF3 100%
+      );
+
+      --parallax-y: 0px;
+      --progress: 0%;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--background);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      color: var(--foreground);
+      background: var(--background);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+    }
+
+    .page-atmosphere {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+
+      background:
+        var(--atmo-gradient);
+
+      transition:
+        background var(--atmo-transition, 1.8s) ease;
+    }
+
+    .atmosphere-light {
+      position: absolute;
+
+      left: var(--light-x);
+      top: var(--light-y);
+
+      width: var(--light-size);
+      height: var(--light-size);
+
+      min-width: 260px;
+      min-height: 260px;
+
+      max-width: 720px;
+      max-height: 720px;
+
+      border-radius: 999px;
+
+      background: var(--light-color);
+
+      opacity: var(--light-opacity);
+
+      filter: blur(var(--light-blur));
+
+      transform:
+        translate3d(
+          0,
+          calc(
+            var(--parallax-y) *
+            var(--light-parallax)
+          ),
+          0
+        );
+
+      transition:
+        background var(--atmo-transition, 1.8s) ease,
+        opacity var(--atmo-transition, 1.8s) ease;
+    }
+
+    .glass {
+      background: color-mix(in srgb, var(--background) 78%, transparent);
+      border: 1px solid color-mix(in srgb, var(--primary) 12%, transparent);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .hero-symbol {
+      transform:
+        translate3d(0, calc(var(--parallax-y) * .55), 0)
+        scale(var(--symbol-scale, 1));
+      transition: transform .12s linear;
+      color: var(--primary);
+      filter: drop-shadow(0 16px 36px var(--primary-glow));
+    }
+
+    .hero-symbol.is-breathing {
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: .78; }
+      50% { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition:
+        opacity .8s ease,
+        transform .9s cubic-bezier(.22,1,.36,1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    .quote-mark {
+      color: var(--primary);
+      opacity: .22;
+      font-family: Georgia, serif;
+      font-size: 5rem;
+      line-height: .7;
+    }
+
+    .mission-card {
+      background:
+        linear-gradient(
+          135deg,
+          color-mix(in srgb, var(--primary) 9%, transparent),
+          color-mix(in srgb, var(--primary-light) 13%, transparent)
+        );
+      border: 1px solid color-mix(in srgb, var(--primary) 14%, transparent);
+    }
+
+    .prayer-card {
+      background:
+        radial-gradient(
+          circle at 50% 0%,
+          color-mix(in srgb, var(--primary) 15%, transparent),
+          transparent 58%
+        ),
+        color-mix(in srgb, var(--background) 72%, transparent);
+    }
+
+    .progress-track {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      z-index: 100;
+      background: color-mix(in srgb, var(--primary) 10%, transparent);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: var(--progress);
+      background: linear-gradient(
+        90deg,
+        var(--primary-light),
+        var(--primary),
+        var(--primary-dark)
+      );
+      transition: width .1s linear;
+    }
+
+    .scroll-indicator {
+      animation: float 2.4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); opacity: .65; }
+      50% { transform: translateY(7px); opacity: 1; }
+    }
+
+    .share-sheet {
+      background: color-mix(in srgb, var(--background) 88%, transparent);
+      border: 1px solid color-mix(in srgb, var(--primary) 13%, transparent);
+      box-shadow: 0 24px 80px color-mix(in srgb, var(--primary) 16%, transparent);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+
+      max-height: calc(100dvh - 2rem);
+      overflow-y: auto;
+
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+
+      scrollbar-gutter: stable;
+    }
+
+    .share-action {
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .share-action:hover {
+      transform: translateY(-2px);
+      background: color-mix(in srgb, var(--primary) 8%, transparent);
+    }
+
+    .share-dialog {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .qr-container img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: auto;
+    }
+
+    .loading {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+    }
+
+    .loading-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--primary);
+      animation: loading 1.1s ease-in-out infinite;
+    }
+
+    @keyframes loading {
+      0%, 100% { transform: translateY(0); opacity: .4; }
+      50% { transform: translateY(-8px); opacity: 1; }
+    }
+
+    .error {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+      .atmosphere-light,
+      .hero-symbol {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress-track" aria-hidden="true">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+
+  <div
+    id="pageAtmosphere"
+    class="page-atmosphere"
+    aria-hidden="true"
+  ></div>
+
+  <div id="app">
+    <div class="loading">
+      <div class="flex flex-col items-center gap-4 text-center">
+        <div class="loading-dot"></div>
+        <p class="text-sm tracking-wide" style="color:var(--muted)">Preparando sua experiência...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*
+      ============================================================
+      EXPERIÊNCIA DIÁRIA — RENDERIZADOR GENÉRICO
+      ============================================================
+
+      O HTML não conhece Santa Clara, temas, virtudes ou orações.
+      Tudo é carregado dos JSONs.
+
+      Estrutura esperada:
+
+      /data/daily.json
+      /data/atmospheres.json
+      /data/themes.json
+      /data/virtues.json
+      /data/saints.json
+      /data/marian.json
+      /data/reflections.json
+      /data/missions.json
+      /data/prayers.json
+
+      daily.json pode ser:
+        {
+          "date": "08-11",
+          "theme": 18,
+          "virtue": 42,
+          "saint": 187,
+          "marian": 58,
+          "reflection": 284,
+          "mission": 133,
+          "prayer": 94,
+          "visual": {
+            "atmosphere": "amanhecer-suave",
+            "iconAnimation": "breathe"
+          },
+          "experience": {
+            "estimatedTime": 5,
+            "progress": true
+          }
+        }
+
+      Os bancos podem ser arrays ou objetos indexados por id.
+    */
+
+    function getDaily() {
+      const now = new Date();
+
+      const month = String(
+        now.getMonth() + 1
+      ).padStart(2, "0");
+
+      const day = String(
+        now.getDate()
+      ).padStart(2, "0");
+
+      return `main/${month}/${day}.json`;
+    }
+
+    const DATA_PATH = "https://josuesantos.github.io/umaPalavraParaHoje/data/";
+
+    const SOURCES = {
+      daily: getDaily(),
+      //daily: "main/08/30.json",
+      atmospheres: "atmospheres.json",
+      themes: "themes.json",
+      virtues: "virtues.json",
+      saints: "saints.json",
+      marian: "marian.json",
+      reflections: "reflections.json",
+      missions: "missions.json",
+      prayers: "prayers.json"
+    };
+
+    const state = {
+      data: null,
+      reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+      parallaxEnabled: true,
+      parallaxIntensity: .35
+    };
+
+    function escapeHTML(value) {
+      const div = document.createElement("div");
+      div.textContent = value ?? "";
+      return div.innerHTML;
+    }
+
+    function getById(collection, id) {
+      if (!collection) return null;
+
+      if (Array.isArray(collection)) {
+        return collection.find(item => String(item.id) === String(id)) || null;
+      }
+
+      if (typeof collection === "object") {
+        return collection[id] || collection[String(id)] || null;
+      }
+
+      return null;
+    }
+
+    function applyAtmosphere(atmosphere = {}) {
+      const root = document.documentElement;
+
+      const theme = atmosphere.theme || {};
+      const background = atmosphere.background || {};
+      const motion = atmosphere.motion || {};
+
+      root.style.setProperty(
+        "--primary",
+        theme.primary || ""
+      );
+
+      root.style.setProperty(
+        "--primary-light",
+        theme.primaryLight || ""
+      );
+
+      root.style.setProperty(
+        "--primary-lighter",
+        theme.primaryLighter || ""
+      );
+
+      root.style.setProperty(
+        "--primary-soft",
+        theme.primarySoft || ""
+      );
+
+      root.style.setProperty(
+        "--primary-dark",
+        theme.primaryDark || ""
+      );
+
+      root.style.setProperty(
+        "--primary-glow",
+        theme.primaryGlow || ""
+      );
+
+      root.style.setProperty(
+        "--background",
+        theme.background || background.base || ""
+      );
+
+      root.style.setProperty(
+        "--foreground",
+        theme.foreground || ""
+      );
+
+      root.style.setProperty(
+        "--muted",
+        theme.muted || ""
+      );
+
+      root.style.setProperty(
+        "--atmo-background",
+        background.base || ""
+      );
+
+      root.style.setProperty(
+        "--atmo-gradient",
+        background.gradient || ""
+      );
+
+      root.style.setProperty(
+        "--atmo-transition",
+        motion.transition || "1.8s"
+      );
+
+      state.parallaxEnabled =
+        motion.parallax === true &&
+        !state.reducedMotion;
+
+      state.parallaxIntensity =
+        Number(motion.intensity || 0);
+
+      document
+        .querySelector('meta[name="theme-color"]')
+        ?.setAttribute(
+          "content",
+          theme.primary || ""
+        );
+
+      renderAtmosphereLights(
+        atmosphere.lights || []
+      );
+    }
+
+    function renderAtmosphereLights(lights) {
+      const container =
+        document.getElementById("pageAtmosphere");
+
+      if (!container) return;
+
+      container.innerHTML = lights
+        .map(light => `
+          <div
+            class="atmosphere-light"
+            style="
+              --light-x: ${light.x};
+              --light-y: ${light.y};
+              --light-size: ${light.size};
+              --light-color: ${light.color};
+              --light-opacity: ${light.opacity};
+              --light-blur: ${light.blur};
+              --light-parallax: ${light.parallax};
+            "
+          ></div>
+        `)
+        .join("");
+    }
+
+    function icon(name, className = "", size = 28) {
+      const safeName = escapeHTML(name || "sparkles");
+
+      return `
+        <i
+          data-lucide="${safeName}"
+          class="icon ${escapeHTML(className)}"
+          width="${size}"
+          height="${size}"
+          aria-hidden="true"></i>
+      `;
+    }
+
+    function renderIcon(name, className = "", size = 28) {
+      return icon(name, className, size);
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return "";
+
+      const [month, day] = dateString.split("-").map(Number);
+
+      if (!month || !day) return dateString;
+
+      const date = new Date(2024, month - 1, day);
+
+      return new Intl.DateTimeFormat("pt-BR", {
+        day: "numeric",
+        month: "long"
+      }).format(date);
+    }
+
+    function renderHero(daily, saint, theme, virtue) {
+      const labels = daily.labels || {};
+
+      return `
+        <section
+          id="top"
+          class="relative min-h-[100svh] flex items-center justify-center px-6 py-16"
+        >
+          <div class="w-full max-w-3xl text-center">
+
+            <div class="reveal mb-8">
+              <p
+                class="text-xs sm:text-sm uppercase tracking-[.28em] font-medium"
+                style="color:var(--muted)"
+              >
+                ${escapeHTML(formatDate(daily.date))}
+              </p>
+            </div>
+
+            <div
+              class="reveal mx-auto mb-9 flex h-28 w-28 sm:h-36 sm:w-36 items-center justify-center"
+            >
+              <div
+                class="hero-symbol ${daily.visual?.iconAnimation === "breathe" ? "is-breathing" : ""}"
+              >
+                ${renderIcon(
+                  saint?.icon || theme?.icon || "sparkles",
+                  "w-20 h-20 sm:w-24 sm:h-24 stroke-[1.15]",
+                  96
+                )}
+              </div>
+            </div>
+
+            <div class="reveal">
+              ${
+                saint?.name
+                  ? `<p class="mb-3 text-sm font-medium tracking-wide" style="color:var(--primary)">
+                      ${escapeHTML(saint.name)}
+                    </p>`
+                  : ""
+              }
+
+              <h1
+                class="text-4xl sm:text-6xl md:text-7xl font-light tracking-tight leading-[.98]"
+              >
+                ${escapeHTML(
+                  daily.heroTitle ||
+                  saint?.title ||
+                  theme?.title ||
+                  "Uma palavra para hoje"
+                )}
+              </h1>
+
+              ${
+                saint?.summary
+                  ? `<p
+                      class="mx-auto mt-6 max-w-xl text-base sm:text-lg leading-8"
+                      style="color:var(--muted)"
+                    >
+                      ${escapeHTML(saint.summary)}
+                    </p>`
+                  : ""
+              }
+            </div>
+
+            ${
+              virtue
+                ? `<div class="reveal mt-8 inline-flex items-center gap-2 rounded-full px-4 py-2 glass text-sm">
+                    ${renderIcon(virtue.icon || "heart", "w-4 h-4", 16)}
+                    <span>${escapeHTML(virtue.title || "")}</span>
+                  </div>`
+                : ""
+            }
+
+            <div class="reveal mt-14 flex flex-col items-center gap-3">
+              <span
+                class="text-xs uppercase tracking-[.22em]"
+                style="color:var(--muted)"
+              >
+                ${escapeHTML(labels.start || "Comece sua jornada")}
+              </span>
+              <a
+                href="#step-1"
+                class="scroll-indicator"
+                aria-label="Começar"
+                style="color:var(--primary)"
+              >
+                ${renderIcon("chevron-down", "w-6 h-6", 24)}
+              </a>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderStepIconHeader(number, iconName) {
+      return `
+        ${
+            iconName
+            ? `<div class="mb-4 mx-auto flex items-center justify-center" style="color:var(--primary)">
+                ${renderIcon(iconName, "w-6 h-6 stroke-[1.5]", 24)}
+                </div>`
+            : ""
+        }
+      `;
+    }
+
+    function renderStepHeader(number, title) {
+      return `
+        <div class="mb-8 flex items-start gap-5">
+          <div>
+            <h2 class="text-3xl sm:text-5xl font-light tracking-tight">
+              ${escapeHTML(title)}
+            </h2>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderContentStep({
+      id,
+      number,
+      label,
+      title,
+      text,
+      iconName,
+      extraClass = ""
+    }) {
+      return `
+        <section
+          id="${escapeHTML(id)}"
+          class="relative min-h-[82svh] flex items-center px-6 py-20 sm:py-28 ${extraClass}"
+        >
+          <div class="reveal w-full max-w-3xl mx-auto">
+            
+            ${renderStepIconHeader(number, iconName)}
+
+            <p
+              class="mb-5 text-xs uppercase tracking-[.24em] font-medium"
+              style="color:var(--muted)"
+            >
+              ${escapeHTML(label || "")}
+            </p>
+
+            ${renderStepHeader(number, title)}
+
+            <div class="max-w-2xl ml-9 sm:ml-10">
+              <p class="text-xl sm:text-2xl leading-[1.65] font-light">
+                ${escapeHTML(text || "")}
+              </p>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderSaintStep(number, saint, daily) {
+      if (!saint) return "";
+
+      const title = daily.labels?.saint || "Inspire-se";
+
+      const legacy = saint.legacy || saint.description || "";
+
+      const virtues = Array.isArray(saint.virtues)
+        ? saint.virtues
+        : [];
+
+      return `
+        <section
+          id="step-3"
+          class="relative min-h-[90svh] flex items-center px-6 py-20 sm:py-28"
+        >
+          <div class="reveal w-full max-w-3xl mx-auto">
+            
+            ${renderStepIconHeader(number, saint.icon || "heart")}
+
+            <p
+              class="mb-5 text-xs uppercase tracking-[.24em] font-medium"
+              style="color:var(--muted)"
+            >
+              ${escapeHTML(title)}
+            </p>
+
+            ${renderStepHeader(number, saint.name)}
+
+            <div class="ml-9 sm:ml-10 max-w-2xl">
+              ${
+                saint.title
+                  ? `<p
+                      class="mb-5 text-sm font-medium"
+                      style="color:var(--primary)"
+                    >
+                      ${escapeHTML(saint.title)}
+                    </p>`
+                  : ""
+              }
+
+              ${
+                legacy
+                  ? `<p class="text-xl sm:text-2xl leading-[1.65] font-light">
+                      ${escapeHTML(legacy)}
+                    </p>`
+                  : ""
+              }
+
+              ${
+                virtues.length
+                  ? `<div class="mt-8 flex flex-wrap gap-2">
+                      ${virtues.map(v => `
+                        <span class="rounded-full glass px-3 py-1.5 text-xs">
+                          ${escapeHTML(v)}
+                        </span>
+                      `).join("")}
+                    </div>`
+                  : ""
+              }
+
+              ${
+                daily.saintQuestion
+                  ? `<div class="mt-10 border-l-2 pl-5" style="border-color:var(--primary)">
+                      <p class="text-lg sm:text-xl leading-8 font-medium">
+                        ${escapeHTML(daily.saintQuestion)}
+                      </p>
+                    </div>`
+                  : ""
+              }
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderMissionStep(number, mission, daily) {
+      if (!mission) return "";
+
+      return `
+        <section
+          id="step-4"
+          class="relative min-h-[82svh] flex items-center px-6 py-20 sm:py-28"
+        >
+          <div class="reveal w-full max-w-3xl mx-auto">
+            
+            ${renderStepIconHeader(number, mission.icon || "footprints")}
+
+            <p
+              class="mb-5 text-xs uppercase tracking-[.24em] font-medium"
+              style="color:var(--muted)"
+            >
+              ${escapeHTML(daily.labels?.mission || "Viva")}
+            </p>
+
+            ${renderStepHeader(
+              number,
+              mission.title || "Missão do dia"
+            )}
+
+            <div class="ml-9 sm:ml-10">
+              <div class="mission-card rounded-3xl p-6 sm:p-9">
+                <div class="flex items-start gap-4">
+                  <div
+                    class="mt-1 shrink-0"
+                    style="color:var(--primary)"
+                  >
+                    ${renderIcon("sparkles", "w-5 h-5", 20)}
+                  </div>
+
+                  <div>
+                    <p class="text-xl sm:text-2xl leading-[1.6]">
+                      ${escapeHTML(mission.text || "")}
+                    </p>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderPrayerStep(number, prayer, daily) {
+      if (!prayer) return "";
+
+      return `
+        <section
+          id="step-5"
+          class="relative min-h-[100svh] flex items-center px-6 py-20 sm:py-28"
+        >
+          <div class="reveal w-full max-w-3xl mx-auto">
+            
+            ${renderStepIconHeader(number, prayer.icon || "hands")}
+
+            <p
+              class="mb-5 text-xs uppercase tracking-[.24em] font-medium"
+              style="color:var(--muted)"
+            >
+              ${escapeHTML(daily.labels?.prayer || "Ore")}
+            </p>
+
+            ${renderStepHeader(
+              number,
+              prayer.title || "Oração"
+            )}
+
+            <div class="ml-9 sm:ml-10">
+              <div class="prayer-card rounded-[2rem] p-7 sm:p-12">
+                <div class="quote-mark" aria-hidden="true">“</div>
+
+                <p class="text-xl sm:text-2xl leading-[1.75] font-light">
+                  ${escapeHTML(prayer.text || "")}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderClosing(daily, saint) {
+      const labels = daily.labels || {};
+
+      return `
+        <section
+          class="relative min-h-[70svh] flex items-center justify-center px-6 py-20"
+        >
+          <div class="reveal max-w-2xl text-center">
+
+            <div
+              class="mx-auto mb-8 flex h-16 w-16 items-center justify-center"
+              style="color:var(--primary)"
+            >
+              ${renderIcon("sparkles", "w-8 h-8", 32)}
+            </div>
+
+            <p
+              class="text-xs uppercase tracking-[.25em] mb-6"
+              style="color:var(--muted)"
+            >
+              ${escapeHTML(labels.closing || "Leve esta palavra com você")}
+            </p>
+
+            ${
+              daily.closingText
+                ? `<p class="text-2xl sm:text-4xl font-light leading-[1.35]">
+                    ${escapeHTML(daily.closingText)}
+                  </p>`
+                : ""
+            }
+
+            ${
+              saint?.name
+                ? `<p class="mt-8 text-sm" style="color:var(--muted)">
+                    ${escapeHTML(saint.name)}
+                  </p>`
+                : ""
+            }
+
+            ${
+              daily.nextText
+                ? `<p class="mt-14 text-xs uppercase tracking-[.2em]" style="color:var(--muted)">
+                    ${escapeHTML(daily.nextText)}
+                  </p>`
+                : ""
+            }
+
+            <button
+              type="button"
+              id="shareButton"
+              class="mt-8 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm glass transition-transform hover:scale-105"
+              style="color:var(--primary)"
+              aria-haspopup="dialog"
+            >
+              ${renderIcon("share-2", "w-4 h-4 mr-2", 16)}
+              ${escapeHTML(labels.share || "Compartilhar")}
+            </button>
+
+            <a
+              href="#top"
+              class="mt-8 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm glass transition-transform hover:scale-105"
+              style="color:var(--primary)"
+            >
+              ${renderIcon("arrow-up", "w-4 h-4 mr-2", 16)}
+              ${escapeHTML(labels.backToTop || "Voltar ao início")}
+            </a>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderApp(data) {
+      const {
+        daily,
+        atmospheres,
+        themes,
+        virtues,
+        saints,
+        marian,
+        reflections,
+        missions,
+        prayers
+      } = data;
+
+      const theme = getById(themes, daily.theme);
+      const virtue = getById(virtues, daily.virtue);
+      const saint = getById(saints, daily.saint);
+      const marianItem = getById(marian, daily.marian);
+      const reflection = getById(reflections, daily.reflection);
+      const mission = getById(missions, daily.mission);
+      const prayer = getById(prayers, daily.prayer);
+
+      const atmosphere = getById(
+        atmospheres,
+        daily.visual?.atmosphere
+      );
+
+      applyAtmosphere(atmosphere);
+
+      const hero = renderHero(daily, saint, theme, virtue);
+
+      const reflectionTitle =
+        daily.labels?.reflection ||
+        reflection?.title ||
+        "Contemple";
+
+      const reflectionStep = renderContentStep({
+        id: "step-2",
+        number: 2,
+        label: daily.labels?.reflection || "Contemple",
+        title: reflection?.title || theme?.title || "Uma reflexão",
+        text: reflection?.text || reflection?.summary || "",
+        iconName: reflection?.icon || "book-open"
+      });
+
+      const marianStep = marianItem
+        ? renderContentStep({
+            id: "marian",
+            number: 3,
+            label: daily.labels?.marian || "Com Maria",
+            title: marianItem.title || "Maria",
+            text: marianItem.text || "",
+            iconName: marianItem.icon || "heart"
+          })
+        : "";
+
+      /*
+        Se houver uma meditação mariana, a numeração visual do santo,
+        missão e oração precisa ser ajustada dinamicamente.
+      */
+      const saintNumber = marianItem ? 4 : 3;
+      const missionNumber = saintNumber + 1;
+      const prayerNumber = missionNumber + 1;
+
+      const saintStep = renderSaintStep(saintNumber, saint, daily);
+      const missionStep = renderMissionStep(missionNumber, mission, daily);
+      const prayerStep = renderPrayerStep(prayerNumber, prayer, daily);
+
+      const totalSteps = [reflection, marianItem, saint, mission, prayer]
+        .filter(Boolean).length;
+
+      const app = document.getElementById("app");
+
+      app.innerHTML = `
+        <main>
+          ${hero}
+
+          ${
+            theme
+              ? `<div class="reveal mx-auto max-w-3xl px-6">
+                  <div class="h-px w-full" style="background:color-mix(in srgb, var(--primary) 10%, transparent)"></div>
+                </div>`
+              : ""
+          }
+
+          ${reflectionStep}
+          ${marianStep}
+          ${saintStep}
+          ${missionStep}
+          ${prayerStep}
+
+          ${renderClosing(daily, saint)}
+          <div id="shareDialog"
+            class="share-dialog fixed inset-0 z-[200] hidden items-end sm:items-center justify-center p-4"
+            role="dialog" aria-modal="true" aria-labelledby="shareDialogTitle">
+            <div id="shareBackdrop" class="absolute inset-0 bg-black/25"></div>
+
+            <div class="share-sheet relative w-full max-w-md rounded-[2rem] p-6 sm:p-7">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <p class="text-xs uppercase tracking-[.2em]" style="color:var(--muted)">
+                    ${escapeHTML(daily.labels?.share || "Compartilhe")}
+                  </p>
+                  <h2 id="shareDialogTitle" class="mt-2 text-2xl font-light">
+                    Leve esta mensagem com você
+                  </h2>
+                </div>
+                <button id="closeShare" type="button" class="rounded-full p-2"
+                  style="color:var(--muted)" aria-label="Fechar">
+                  ${renderIcon("x", "w-5 h-5", 20)}
+                </button>
+              </div>
+
+              <div class="mt-1 grid grid-cols-2 gap-3">
+                <button type="button" data-share-action="whatsapp"
+                  class="share-action glass rounded-2xl p-4 text-left">
+                  <span style="color:var(--primary)">${renderIcon("message-circle", "w-6 h-6", 24)}</span>
+                  <span class="mt-3 block text-sm font-medium">WhatsApp</span>
+                  <span class="mt-1 block text-xs" style="color:var(--muted)">Enviar link</span>
+                </button>
+
+                <button type="button" data-share-action="native"
+                  class="share-action glass rounded-2xl p-4 text-left">
+                  <span style="color:var(--primary)">${renderIcon("share-2", "w-6 h-6", 24)}</span>
+                  <span class="mt-3 block text-sm font-medium">Compartilhar</span>
+                  <span class="mt-1 block text-xs" style="color:var(--muted)">Instagram e outros</span>
+                </button>
+
+                <button type="button" data-share-action="copy"
+                  class="share-action glass rounded-2xl p-4 text-left">
+                  <span style="color:var(--primary)">${renderIcon("copy", "w-6 h-6", 24)}</span>
+                  <span class="mt-3 block text-sm font-medium">Copiar link</span>
+                  <span class="mt-1 block text-xs" style="color:var(--muted)">Para colar onde quiser</span>
+                </button>
+
+                <button type="button" data-share-action="qr"
+                  class="share-action glass rounded-2xl p-4 text-left">
+                  <span style="color:var(--primary)">${renderIcon("qr-code", "w-6 h-6", 24)}</span>
+                  <span class="mt-3 block text-sm font-medium">QR Code</span>
+                  <span class="mt-1 block text-xs" style="color:var(--muted)">Mostrar o código</span>
+                </button>
+              </div>
+
+              <p id="shareFeedback" class="min-h-5 text-center text-xs"
+                style="color:var(--muted)"></p>
+
+              <div id="qrPanel" class="qr-container hidden mt-1 rounded-3xl bg-white p-5">
+                <div id="qrCode"></div>
+                <p class="mt-1 text-center text-xs text-slate-500">
+                  Aponte a câmera para abrir esta experiência.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </main>
+      `;
+
+      if (window.lucide) {
+        lucide.createIcons({
+          attrs: {
+            "stroke-width": 1.5
+          }
+        });
+      }
+
+      setupReveal();
+      setupScroll();
+      setupParallax();
+      setupSharing(daily, saint);
+
+      document.title =
+        daily.pageTitle ||
+        saint?.name ||
+        theme?.title ||
+        "Uma palavra para hoje";
+
+      const description =
+        daily.metaDescription ||
+        saint?.summary ||
+        reflection?.text ||
+        "Uma experiência diária de oração e reflexão.";
+
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute("content", description);
+
+      console.info("Experiência carregada:", {
+        date: daily.date,
+        theme: theme?.title,
+        virtue: virtue?.title,
+        saint: saint?.name,
+        totalSteps
+      });
+    }
+
+    function setupSharing(daily, saint) {
+      const dialog = document.getElementById("shareDialog");
+      const openButton = document.getElementById("shareButton");
+      const closeButton = document.getElementById("closeShare");
+      const backdrop = document.getElementById("shareBackdrop");
+      const feedback = document.getElementById("shareFeedback");
+      const qrPanel = document.getElementById("qrPanel");
+      const qrCode = document.getElementById("qrCode");
+
+      if (!dialog || !openButton) return;
+
+      const shareUrl = window.location.href.split("#")[0];
+      const shareText = daily.shareText ||
+        `Uma palavra para hoje${saint?.name ? ` · ${saint.name}` : ""}`;
+
+      const setFeedback = message => feedback.textContent = message || "";
+
+      const openDialog = () => {
+        dialog.classList.remove("hidden");
+        dialog.classList.add("flex");
+        document.body.style.overflow = "hidden";
+      };
+
+      const closeDialog = () => {
+        dialog.classList.add("hidden");
+        dialog.classList.remove("flex");
+        document.body.style.overflow = "";
+      };
+
+      async function copyLink() {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+        } catch {
+          const input = document.createElement("input");
+          input.value = shareUrl;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand("copy");
+          input.remove();
+        }
+        setFeedback("Link copiado.");
+      }
+
+      function whatsapp() {
+        const text = `${shareText}\n${shareUrl}`;
+        window.open(
+          `https://wa.me/?text=${encodeURIComponent(text)}`,
+          "_blank",
+          "noopener,noreferrer"
+        );
+      }
+
+      async function nativeShare() {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: daily.pageTitle || shareText,
+              text: shareText,
+              url: shareUrl
+            });
+          } catch (error) {
+            if (error?.name !== "AbortError") {
+              setFeedback("Não foi possível abrir o compartilhamento.");
+            }
+          }
+        } else {
+          await copyLink();
+          setFeedback("Link copiado. Você pode colá-lo no Instagram ou em outro app.");
+        }
+      }
+
+      function showQR() {
+        qrPanel.classList.remove("hidden");
+        if (qrCode.dataset.ready === "true") return;
+
+        const img = document.createElement("img");
+        img.alt = "QR Code para compartilhar esta página";
+        img.width = 320;
+        img.height = 320;
+        img.src =
+          "https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=" +
+          encodeURIComponent(shareUrl);
+
+        qrCode.innerHTML = "";
+        qrCode.appendChild(img);
+        qrCode.dataset.ready = "true";
+      }
+
+      openButton.addEventListener("click", openDialog);
+      closeButton.addEventListener("click", closeDialog);
+      backdrop.addEventListener("click", closeDialog);
+
+      dialog.addEventListener("click", event => {
+        const action = event.target.closest("[data-share-action]")?.dataset.shareAction;
+        if (!action) return;
+        if (action === "whatsapp") whatsapp();
+        if (action === "native") nativeShare();
+        if (action === "copy") copyLink();
+        if (action === "qr") showQR();
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !dialog.classList.contains("hidden")) {
+          closeDialog();
+        }
+      });
+    }
+
+    function setupReveal() {
+      const elements = document.querySelectorAll(".reveal");
+
+      if (state.reducedMotion) {
+        elements.forEach(element => element.classList.add("visible"));
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: .14,
+          rootMargin: "0px 0px -8% 0px"
+        }
+      );
+
+      elements.forEach(element => observer.observe(element));
+    }
+
+    function setupScroll() {
+      let ticking = false;
+
+      function updateScroll() {
+        const scrollTop = window.scrollY;
+        const documentHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+
+        const progress =
+          documentHeight > 0
+            ? Math.min(100, Math.max(0, (scrollTop / documentHeight) * 100))
+            : 0;
+
+        document.documentElement.style.setProperty(
+          "--progress",
+          `${progress}%`
+        );
+
+        ticking = false;
+      }
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (!ticking) {
+            requestAnimationFrame(updateScroll);
+            ticking = true;
+          }
+        },
+        { passive: true }
+      );
+
+      updateScroll();
+    }
+
+    function setupParallax() {
+      if (!state.parallaxEnabled) return;
+
+      let ticking = false;
+
+      function updateParallax() {
+        const y = Math.min(
+          window.scrollY * state.parallaxIntensity,
+          260
+        );
+
+        document.documentElement.style.setProperty(
+          "--parallax-y",
+          `${y}px`
+        );
+
+        ticking = false;
+      }
+
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (!ticking) {
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+          }
+        },
+        { passive: true }
+      );
+
+      updateParallax();
+    }
+
+    async function loadJSON(file) {
+      const response = await fetch(DATA_PATH + file, {
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error(`Não foi possível carregar ${file}: ${response.status}`);
+      }
+
+      return response.json();
+    }
+
+    async function loadData() {
+      const entries = Object.entries(SOURCES);
+
+      const loaded = await Promise.all(
+        entries.map(async ([key, file]) => {
+          return [key, await loadJSON(file)];
+        })
+      );
+
+      return Object.fromEntries(loaded);
+    }
+
+    function renderError(error) {
+      console.error(error);
+
+      document.getElementById("app").innerHTML = `
+        <main class="error">
+          <div class="max-w-lg text-center">
+            <div
+              class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full glass"
+              style="color:var(--primary)"
+            >
+              ${renderIcon("cloud-off", "w-7 h-7", 28)}
+            </div>
+
+            <h1 class="text-2xl font-light mb-4">
+              Não foi possível carregar a experiência.
+            </h1>
+
+            <p class="text-sm leading-7" style="color:var(--muted)">
+              Verifique se os arquivos JSON estão disponíveis na pasta
+              <code>/data/</code> e se a página está sendo servida por um
+              servidor HTTP.
+            </p>
+
+            <details class="mt-6 text-left text-xs glass rounded-2xl p-4">
+              <summary class="cursor-pointer">Detalhes técnicos</summary>
+              <pre class="mt-3 whitespace-pre-wrap">${escapeHTML(error.message)}</pre>
+            </details>
+          </div>
+        </main>
+      `;
+
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+
+    async function init() {
+      try {
+        state.data = await loadData();
+        renderApp(state.data);
+      } catch (error) {
+        renderError(error);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
